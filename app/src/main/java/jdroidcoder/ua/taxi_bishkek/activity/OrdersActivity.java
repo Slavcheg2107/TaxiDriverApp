@@ -1,5 +1,6 @@
 package jdroidcoder.ua.taxi_bishkek.activity;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -21,6 +22,7 @@ import jdroidcoder.ua.taxi_bishkek.events.ErrorMessageEvent;
 import jdroidcoder.ua.taxi_bishkek.events.OrderEvent;
 import jdroidcoder.ua.taxi_bishkek.events.UpdateAdapterEvent;
 import jdroidcoder.ua.taxi_bishkek.fragment.OrderFragment;
+import jdroidcoder.ua.taxi_bishkek.service.UpdateOrdersService;
 
 /**
  * Created by jdroidcoder on 07.04.17.
@@ -45,6 +47,7 @@ public class OrdersActivity extends AppCompatActivity {
         }
 
 //        startService(new Intent(this, LocationService.class));
+        startService(new Intent(this, UpdateOrdersService.class));
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -94,6 +97,8 @@ public class OrdersActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        UpdateOrdersService.isRun = false;
+        stopService(new Intent(this, UpdateOrdersService.class));
 //        stopService(new Intent(this, LocationService.class));
         EventBus.getDefault().unregister(this);
         super.onDestroy();

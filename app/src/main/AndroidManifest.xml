@@ -23,15 +23,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service android:name=".service.LocationService" />
+        <service android:name=".service.UpdateOrdersService" />
+
         <activity android:name=".activity.OrdersActivity" />
         <activity android:name=".activity.MapsActivity" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDP2OjS_ORoDbj2E7Srd9LTdpmA_Bl-0K8" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
     </application>
 
 </manifest>

@@ -88,6 +88,7 @@ public class NetworkService {
             @Override
             public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
                 OrderDto.Oreders.setItems(response.body());
+                EventBus.getDefault().post(new UpdateAdapterEvent());
             }
 
             @Override
@@ -103,6 +104,7 @@ public class NetworkService {
             @Override
             public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
                 OrderDto.AcceptOreders.setItems(response.body());
+                EventBus.getDefault().post(new UpdateAdapterEvent());
             }
 
             @Override
@@ -151,7 +153,7 @@ public class NetworkService {
         call.enqueue(new Callback<UserCoordinateDto>() {
             @Override
             public void onResponse(Call<UserCoordinateDto> call, Response<UserCoordinateDto> response) {
-                EventBus.getDefault().post(new ShowMapEvent(response.body().getLat(),response.body().getLng()));
+                EventBus.getDefault().post(new ShowMapEvent(response.body().getLat(), response.body().getLng()));
             }
 
             @Override

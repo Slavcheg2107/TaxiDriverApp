@@ -22,6 +22,7 @@ import jdroidcoder.ua.taxi_bishkek.adapters.OrderAdapter;
 import jdroidcoder.ua.taxi_bishkek.events.ChangeListViewEvent;
 import jdroidcoder.ua.taxi_bishkek.events.ErrorMessageEvent;
 import jdroidcoder.ua.taxi_bishkek.events.ShowMapEvent;
+import jdroidcoder.ua.taxi_bishkek.events.UpdateAdapterEvent;
 import jdroidcoder.ua.taxi_bishkek.model.OrderDto;
 import jdroidcoder.ua.taxi_bishkek.network.NetworkService;
 
@@ -77,7 +78,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                         orderDto.getUserPhone());
                 OrderDto.Oreders.getOrders().remove(position);
                 orderAdapter.notifyDataSetChanged();
-            }else {
+            } else {
                 EventBus.getDefault().post(new ErrorMessageEvent("U are have full orders"));
             }
         } else {
@@ -85,6 +86,17 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
             networkService.getUserCoordinate(orderDto.getUserPhone());
         }
     }
+
+    @Subscribe
+    public void onUpdateAdapterEvent(UpdateAdapterEvent updateAdapterEvent) {
+        if (!isOrders) {
+            orderAdapter.orderDtos = OrderDto.Oreders.getOrders();
+        }else {
+            orderAdapter.orderDtos = OrderDto.AcceptOreders.getOrders();
+        }
+        orderAdapter.notifyDataSetChanged();
+    }
+
 
     @Subscribe
     public void onShowMapEvent(ShowMapEvent showMapEvent) {
