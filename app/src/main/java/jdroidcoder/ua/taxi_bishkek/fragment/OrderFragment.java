@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import jdroidcoder.ua.taxi_bishkek.events.ErrorMessageEvent;
 import jdroidcoder.ua.taxi_bishkek.events.ShowMapEvent;
 import jdroidcoder.ua.taxi_bishkek.events.UpdateAdapterEvent;
 import jdroidcoder.ua.taxi_bishkek.model.OrderDto;
+import jdroidcoder.ua.taxi_bishkek.model.UserProfileDto;
 import jdroidcoder.ua.taxi_bishkek.network.NetworkService;
 
 /**
@@ -37,6 +39,8 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
     private boolean isOrders = false;
     private NetworkService networkService;
     public static boolean isShowMap = false;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Nullable
     @Override
@@ -49,6 +53,13 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
         orderListView.setOnItemClickListener(this);
         EventBus.getDefault().register(this);
         networkService = new NetworkService();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new NetworkService().getOrders();
+                new NetworkService().getAllAcceptOrders(UserProfileDto.User.getPhone());
+            }
+        });
         return view;
     }
 
@@ -95,6 +106,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
             orderAdapter.orderDtos = OrderDto.AcceptOreders.getOrders();
         }
         orderAdapter.notifyDataSetChanged();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
 
