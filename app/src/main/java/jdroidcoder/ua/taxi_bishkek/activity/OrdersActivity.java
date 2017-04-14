@@ -1,5 +1,6 @@
 package jdroidcoder.ua.taxi_bishkek.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -9,7 +10,14 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
@@ -24,6 +32,8 @@ import jdroidcoder.ua.taxi_bishkek.events.ErrorMessageEvent;
 import jdroidcoder.ua.taxi_bishkek.events.OrderEvent;
 import jdroidcoder.ua.taxi_bishkek.events.UpdateAdapterEvent;
 import jdroidcoder.ua.taxi_bishkek.fragment.OrderFragment;
+import jdroidcoder.ua.taxi_bishkek.model.UserProfileDto;
+import jdroidcoder.ua.taxi_bishkek.network.NetworkService;
 import jdroidcoder.ua.taxi_bishkek.service.UpdateOrdersService;
 
 /**
@@ -106,5 +116,36 @@ public class OrdersActivity extends AppCompatActivity {
 //        stopService(new Intent(this, LocationService.class));
         EventBus.getDefault().unregister(this);
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.changeNumber) {
+            final View view = LayoutInflater.from(this).inflate(R.layout.alert_style, null);
+            new AlertDialog.Builder(this)
+                    .setView(view)
+                    .setCancelable(false)
+                    .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            EditText phoneET = (EditText) view.findViewById(R.id.phone);
+                            if (!TextUtils.isEmpty(phoneET.getText().toString())) {
+                                UserProfileDto.User.setPhone(phoneET.getText().toString());
+                                new NetworkService().setDataToProfile(UserProfileDto.User.getEmail(),
+                                        UserProfileDto.User.getFirstName(),
+                                        UserProfileDto.User.getLastName(),
+                                        UserProfileDto.User.getPhone());
+                                dialog.dismiss();
+                            }
+                        }
+                    }).show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

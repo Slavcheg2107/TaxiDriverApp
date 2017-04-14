@@ -90,18 +90,20 @@ public class NetworkService {
         call.enqueue(new Callback<List<OrderDto>>() {
             @Override
             public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
-                for (int i = 0; i < response.body().size(); i++) {
-                    response.body().get(i).setDistance(gps2m(OrdersActivity.myLocation.getLatitude(),
-                            OrdersActivity.myLocation.getLongitude(),
-                            response.body().get(i).getPointACoordinate()[0],
-                            response.body().get(i).getPointACoordinate()[1]));
-                }
-                Collections.sort(response.body(), new Comparator<OrderDto>() {
-                    @Override
-                    public int compare(OrderDto o1, OrderDto o2) {
-                        return o2.getDistance().compareTo(o1.getDistance());
+                if (OrdersActivity.myLocation != null) {
+                    for (int i = 0; i < response.body().size(); i++) {
+                        response.body().get(i).setDistance(gps2m(OrdersActivity.myLocation.getLatitude(),
+                                OrdersActivity.myLocation.getLongitude(),
+                                response.body().get(i).getPointACoordinate()[0],
+                                response.body().get(i).getPointACoordinate()[1]));
                     }
-                });
+                    Collections.sort(response.body(), new Comparator<OrderDto>() {
+                        @Override
+                        public int compare(OrderDto o1, OrderDto o2) {
+                            return o2.getDistance().compareTo(o1.getDistance());
+                        }
+                    });
+                }
                 OrderDto.Oreders.setItems(response.body());
                 EventBus.getDefault().post(new UpdateAdapterEvent());
             }
