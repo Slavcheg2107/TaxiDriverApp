@@ -15,17 +15,24 @@ public class OrderDto {
     private Long time;
     private String userPhone;
     private String status;
+    private double[] pointACoordinate;
+    private double[] pointBCoordinate;
+    private Integer distance;
 
     public OrderDto() {
     }
 
-    public OrderDto(Long id, String pointA, String pointB, Long time, String userPhone, String status) {
+    public OrderDto(Long id, String pointA, String pointB, Long time,
+                    String userPhone, String status,
+                    double[] pointACoordinate, double[] pointBCoordinate) {
         this.id = id;
         this.pointA = pointA;
         this.pointB = pointB;
         this.time = time;
         this.userPhone = userPhone;
         this.status = status;
+        this.pointACoordinate = pointACoordinate;
+        this.pointBCoordinate = pointBCoordinate;
     }
 
     public String getPointA() {
@@ -79,6 +86,30 @@ public class OrderDto {
 
     public String getPoints() {
         return getPointA() + " - " + getPointB();
+    }
+
+    public double[] getPointACoordinate() {
+        return pointACoordinate;
+    }
+
+    public void setPointACoordinate(double[] pointACoordinate) {
+        this.pointACoordinate = pointACoordinate;
+    }
+
+    public double[] getPointBCoordinate() {
+        return pointBCoordinate;
+    }
+
+    public void setPointBCoordinate(double[] pointBCoordinate) {
+        this.pointBCoordinate = pointBCoordinate;
+    }
+
+    public Integer getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Integer distance) {
+        this.distance = distance;
     }
 
     @Override

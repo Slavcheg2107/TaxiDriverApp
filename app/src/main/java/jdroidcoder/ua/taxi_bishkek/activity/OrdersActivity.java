@@ -2,6 +2,8 @@ package jdroidcoder.ua.taxi_bishkek.activity;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
@@ -30,6 +32,7 @@ import jdroidcoder.ua.taxi_bishkek.service.UpdateOrdersService;
 public class OrdersActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    public static Location myLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,8 @@ public class OrdersActivity extends AppCompatActivity {
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     123);
         }
-
+        myLocation = ((LocationManager) getSystemService(LOCATION_SERVICE)).
+                getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 //        startService(new Intent(this, LocationService.class));
         startService(new Intent(this, UpdateOrdersService.class));
         viewPager = (ViewPager) findViewById(R.id.viewpager);
