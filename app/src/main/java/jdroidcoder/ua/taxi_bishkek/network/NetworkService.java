@@ -75,6 +75,7 @@ public class NetworkService {
                 UserProfileDto.User.setPhone(response.body().getPhone());
                 UserProfileDto.User.setFirstName(response.body().getFirstName());
                 UserProfileDto.User.setLastName(response.body().getLastName());
+                UserProfileDto.User.setEmail(response.body().getEmail());
                 EventBus.getDefault().post(new MoveNextEvent());
             }
 

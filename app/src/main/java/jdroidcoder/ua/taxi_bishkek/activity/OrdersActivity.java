@@ -128,13 +128,14 @@ public class OrdersActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.changeNumber) {
             final View view = LayoutInflater.from(this).inflate(R.layout.alert_style, null);
+            final EditText phoneET = (EditText) view.findViewById(R.id.phone);
+            phoneET.setText(UserProfileDto.User.getPhone());
             new AlertDialog.Builder(this)
                     .setView(view)
                     .setCancelable(false)
                     .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            EditText phoneET = (EditText) view.findViewById(R.id.phone);
                             if (!TextUtils.isEmpty(phoneET.getText().toString())) {
                                 UserProfileDto.User.setPhone(phoneET.getText().toString());
                                 new NetworkService().setDataToProfile(UserProfileDto.User.getEmail(),
