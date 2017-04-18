@@ -8,14 +8,26 @@ public class UserProfileDto {
     private String lastName;
     private String phone;
     private String email;
+    private int balance;
 
     public UserProfileDto() {
     }
 
-    public UserProfileDto(String firstName, String lastName, String phone) {
+    public UserProfileDto(String firstName, String lastName,
+                          String phone, String email, int balance) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
+        this.email = email;
+        this.balance = balance;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
     }
 
     public String getFirstName() {
@@ -55,6 +67,15 @@ public class UserProfileDto {
         private static String lastName;
         private static String phone;
         private static String email;
+        private static int balance;
+
+        public static int getBalance() {
+            return balance;
+        }
+
+        public static void setBalance(int balance) {
+            User.balance = balance;
+        }
 
         public static String getFirstName() {
             return firstName;

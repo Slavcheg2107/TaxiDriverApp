@@ -3,9 +3,13 @@ package jdroidcoder.ua.taxi_bishkek.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -56,11 +60,18 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new NetworkService().getOrders();
-                new NetworkService().getAllAcceptOrders(UserProfileDto.User.getPhone());
+                networkService.getProfile(UserProfileDto.User.getEmail());
+                networkService.getOrders();
+                networkService.getAllAcceptOrders(UserProfileDto.User.getPhone());
             }
         });
+        setHasOptionsMenu(true);
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -84,10 +95,17 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
         OrderDto orderDto;
         if (!isOrders) {
             if (OrderDto.AcceptOreders.getOrders().size() < 4) {
+                if (checkBalance()) {
+                    EventBus.getDefault().post(new ErrorMessageEvent("U are have small balance"));
+                    return;
+                }
                 orderDto = OrderDto.Oreders.getOrders().get(position);
                 networkService.acceptOrder(orderDto.getId(), orderDto.getPointA(), orderDto.getPointB(),
                         orderDto.getUserPhone());
+                networkService.editBalance(-5);
+                UserProfileDto.User.setBalance(UserProfileDto.User.getBalance() - 5);
                 OrderDto.Oreders.getOrders().remove(position);
+                getActivity().invalidateOptionsMenu();
                 orderAdapter.notifyDataSetChanged();
             } else {
                 EventBus.getDefault().post(new ErrorMessageEvent("U are have full orders"));
@@ -98,17 +116,21 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
         }
     }
 
+    private boolean checkBalance() {
+        return UserProfileDto.User.getBalance() == 0;
+    }
+
     @Subscribe
     public void onUpdateAdapterEvent(UpdateAdapterEvent updateAdapterEvent) {
         if (!isOrders) {
             orderAdapter.orderDtos = OrderDto.Oreders.getOrders();
-        }else {
+        } else {
             orderAdapter.orderDtos = OrderDto.AcceptOreders.getOrders();
         }
         orderAdapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
+        getActivity().invalidateOptionsMenu();
     }
-
 
     @Subscribe
     public void onShowMapEvent(ShowMapEvent showMapEvent) {

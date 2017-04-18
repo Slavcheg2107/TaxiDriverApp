@@ -11,4 +11,5 @@
     <string name="empty_order">All feild must be full</string>
     <string name="call_label">Call</string>
     <string name="changeNumber">Change number</string>
+    <string name="balance">Your balance:</string>
 </resources>

@@ -149,4 +149,10 @@ public class OrdersActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.getItem(0).setTitle(getString(R.string.balance) + " " + UserProfileDto.User.getBalance());
+        return super.onPrepareOptionsMenu(menu);
+    }
 }

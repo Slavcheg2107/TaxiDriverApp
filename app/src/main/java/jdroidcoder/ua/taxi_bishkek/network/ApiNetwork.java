@@ -56,4 +56,16 @@ public interface ApiNetwork {
     @POST("getUserCoordinate")
     @FormUrlEncoded
     Call<UserCoordinateDto> getUserCoordinate(@Field("userPhone") String email);
+
+    @POST("removeAcceptedOrder")
+    @FormUrlEncoded
+    Call<OrderDto> removeAcceptedOrder(@Field("id") Long id);
+
+    @GET("editBalance")
+    Call<Void> editBalance(@Query("userEmail") String userEmail,
+                           @Query("balance") int balance);
+
+    @POST("getProfile")
+    @FormUrlEncoded
+    Call<UserProfileDto> getProfile(@Field("email") String email);
 }

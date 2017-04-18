@@ -9,11 +9,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import jdroidcoder.ua.taxi_bishkek.R;
+import jdroidcoder.ua.taxi_bishkek.events.UpdateAdapterEvent;
 import jdroidcoder.ua.taxi_bishkek.model.OrderDto;
+import jdroidcoder.ua.taxi_bishkek.model.UserProfileDto;
 import jdroidcoder.ua.taxi_bishkek.network.NetworkService;
 
 /**
@@ -52,19 +56,22 @@ public class OrderAdapter extends BaseAdapter {
         ((TextView) convertView.findViewById(R.id.whenTV)).setText(orderDto.getTime());
         if (isAccept) {
             convertView.findViewById(R.id.call).setVisibility(View.VISIBLE);
-//            convertView.findViewById(R.id.close).setVisibility(View.VISIBLE);
+            convertView.findViewById(R.id.close).setVisibility(View.VISIBLE);
         }
         convertView.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new NetworkService().removeOrder(orderDto);
+                new NetworkService().removeAcceptedOrder(orderDto.getId());
+                OrderDto.AcceptOreders.getOrders().remove(orderDto);
+                UserProfileDto.User.setBalance(UserProfileDto.User.getBalance() + 5);
+                EventBus.getDefault().post(new UpdateAdapterEvent());
             }
         });
         convertView.findViewById(R.id.call).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                callIntent.setData(Uri.parse("tel:"+Uri.encode(orderDto.getUserPhone().trim())));
+                callIntent.setData(Uri.parse("tel:" + Uri.encode(orderDto.getUserPhone().trim())));
                 callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(callIntent);
             }

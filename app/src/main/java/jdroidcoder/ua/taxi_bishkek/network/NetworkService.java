@@ -57,6 +57,7 @@ public class NetworkService {
                 UserProfileDto.User.setFirstName(response.body().getFirstName());
                 UserProfileDto.User.setLastName(response.body().getLastName());
                 UserProfileDto.User.setEmail(response.body().getEmail());
+                UserProfileDto.User.setBalance(response.body().getBalance());
                 EventBus.getDefault().post(new MoveNextEvent());
             }
 
@@ -76,6 +77,7 @@ public class NetworkService {
                 UserProfileDto.User.setFirstName(response.body().getFirstName());
                 UserProfileDto.User.setLastName(response.body().getLastName());
                 UserProfileDto.User.setEmail(response.body().getEmail());
+                UserProfileDto.User.setBalance(response.body().getBalance());
                 EventBus.getDefault().post(new MoveNextEvent());
             }
 
@@ -116,7 +118,7 @@ public class NetworkService {
         });
     }
 
-    public int gps2m(double lat_a, double lng_a, double lat_b, double lng_b) {
+    private int gps2m(double lat_a, double lng_a, double lat_b, double lng_b) {
         double pk = (180 / 3.14169);
 
         double a1 = lat_a / pk;
@@ -192,6 +194,57 @@ public class NetworkService {
 
             @Override
             public void onFailure(Call<UserCoordinateDto> call, Throwable t) {
+                EventBus.getDefault().post(new ErrorMessageEvent(t.getMessage()));
+            }
+        });
+    }
+
+    public void editBalance(int balance) {
+        Call<Void> call = retrofitConfig.getApiNetwork().editBalance(UserProfileDto.User.getEmail(), balance);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                EventBus.getDefault().post(new ErrorMessageEvent(t.getMessage()));
+            }
+        });
+    }
+
+    public void removeAcceptedOrder(long id) {
+        Call<OrderDto> call = retrofitConfig.getApiNetwork().removeAcceptedOrder(id);
+        call.enqueue(new Callback<OrderDto>() {
+            @Override
+            public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
+                OrderDto.Oreders.add(response.body());
+                OrderDto.AcceptOreders.getOrders().remove(response.body());
+                editBalance(5);
+            }
+
+            @Override
+            public void onFailure(Call<OrderDto> call, Throwable t) {
+                EventBus.getDefault().post(new ErrorMessageEvent(t.getMessage()));
+            }
+        });
+    }
+
+    public void getProfile(final String email) {
+        Call<UserProfileDto> call = retrofitConfig.getApiNetwork().getProfile(email);
+        call.enqueue(new Callback<UserProfileDto>() {
+            @Override
+            public void onResponse(Call<UserProfileDto> call, Response<UserProfileDto> response) {
+                UserProfileDto.User.setPhone(response.body().getPhone());
+                UserProfileDto.User.setFirstName(response.body().getFirstName());
+                UserProfileDto.User.setLastName(response.body().getLastName());
+                UserProfileDto.User.setEmail(response.body().getEmail());
+                UserProfileDto.User.setBalance(response.body().getBalance());
+                EventBus.getDefault().post(new MoveNextEvent());
+            }
+
+            @Override
+            public void onFailure(Call<UserProfileDto> call, Throwable t) {
                 EventBus.getDefault().post(new ErrorMessageEvent(t.getMessage()));
             }
         });
