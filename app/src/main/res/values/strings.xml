@@ -12,4 +12,5 @@
     <string name="call_label">Call</string>
     <string name="changeNumber">Change number</string>
     <string name="balance">Your balance:</string>
+    <string name="uploadCheck">Upload check</string>
 </resources>

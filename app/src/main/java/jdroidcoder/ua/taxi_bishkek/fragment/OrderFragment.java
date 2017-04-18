@@ -31,6 +31,9 @@ import jdroidcoder.ua.taxi_bishkek.events.UpdateAdapterEvent;
 import jdroidcoder.ua.taxi_bishkek.model.OrderDto;
 import jdroidcoder.ua.taxi_bishkek.model.UserProfileDto;
 import jdroidcoder.ua.taxi_bishkek.network.NetworkService;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * Created by jdroidcoder on 11.04.17.

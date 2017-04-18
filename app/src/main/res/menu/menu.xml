@@ -10,4 +10,8 @@
     <item
         android:id="@+id/changeNumber"
         android:title="@string/changeNumber" />
+
+    <item
+        android:id="@+id/uploadCheck"
+        android:title="@string/uploadCheck" />
 </menu>

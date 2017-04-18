@@ -5,11 +5,15 @@ import java.util.List;
 import jdroidcoder.ua.taxi_bishkek.model.OrderDto;
 import jdroidcoder.ua.taxi_bishkek.model.UserCoordinateDto;
 import jdroidcoder.ua.taxi_bishkek.model.UserProfileDto;
+import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 /**
@@ -68,4 +72,7 @@ public interface ApiNetwork {
     @POST("getProfile")
     @FormUrlEncoded
     Call<UserProfileDto> getProfile(@Field("email") String email);
+
+    @POST("uploadCheck")
+    Call<Void> uploadCheck(@Body RequestBody file);
 }

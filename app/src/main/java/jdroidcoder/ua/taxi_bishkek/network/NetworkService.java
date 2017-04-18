@@ -15,6 +15,9 @@ import jdroidcoder.ua.taxi_bishkek.events.UpdateAdapterEvent;
 import jdroidcoder.ua.taxi_bishkek.model.OrderDto;
 import jdroidcoder.ua.taxi_bishkek.model.UserCoordinateDto;
 import jdroidcoder.ua.taxi_bishkek.model.UserProfileDto;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -245,6 +248,21 @@ public class NetworkService {
 
             @Override
             public void onFailure(Call<UserProfileDto> call, Throwable t) {
+                EventBus.getDefault().post(new ErrorMessageEvent(t.getMessage()));
+            }
+        });
+    }
+
+    public void uploadCheck(RequestBody requestBody) {
+        Call<Void> call = retrofitConfig.getApiNetwork().uploadCheck(requestBody);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                EventBus.getDefault().post(new ErrorMessageEvent("uploaded"));
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
                 EventBus.getDefault().post(new ErrorMessageEvent(t.getMessage()));
             }
         });
