@@ -6,10 +6,12 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -55,7 +57,6 @@ public class OrdersActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     public static Location myLocation;
-    private File checkFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,6 @@ public class OrdersActivity extends AppCompatActivity {
         }
         myLocation = ((LocationManager) getSystemService(LOCATION_SERVICE)).
                 getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//        startService(new Intent(this, LocationService.class));
         startService(new Intent(this, UpdateOrdersService.class));
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -129,7 +129,6 @@ public class OrdersActivity extends AppCompatActivity {
     protected void onDestroy() {
         UpdateOrdersService.isRun = false;
         stopService(new Intent(this, UpdateOrdersService.class));
-//        stopService(new Intent(this, LocationService.class));
         EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
@@ -191,37 +190,15 @@ public class OrdersActivity extends AppCompatActivity {
                 Toast.makeText(this, "Path is null", Toast.LENGTH_SHORT).show();
                 return;
             }
-            checkFile = new File(path);
-            sendFileBrochure();
+            Uri pathUri = Uri.parse("file://" + path);
+            Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+            emailIntent.setType("plain/text");
+            emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"info@wikkno.com"});
+            emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Пополнение");
+            emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Мой номер:" + UserProfileDto.User.getPhone());
+            emailIntent.putExtra(Intent.EXTRA_STREAM, pathUri);
+            startActivity(Intent.createChooser(emailIntent, "Отправка письма..."));
         }
-    }
-
-    private void sendFileBrochure() {
-        String type = null;
-        String extension = null;
-
-        String fileName = checkFile.getName();
-        int i = checkFile.getName().lastIndexOf('.');
-        if (i > 0) {
-            extension = fileName.substring(i + 1);
-        }
-
-        if (extension != null) {
-            type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-        }
-
-        if (type == null) {
-            Toast.makeText(this, "Type of file incorrect", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        MediaType mediaType = MediaType.parse("image/jpeg");
-
-        RequestBody requestBody = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("file", UserProfileDto.User.getEmail() + "_" + new Date(),
-                        RequestBody.create(mediaType, checkFile))
-                .build();
-        new NetworkService().uploadCheck(requestBody);
     }
 
     @Override
