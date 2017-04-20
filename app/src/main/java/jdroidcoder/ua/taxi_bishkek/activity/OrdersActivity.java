@@ -193,7 +193,7 @@ public class OrdersActivity extends AppCompatActivity {
             Uri pathUri = Uri.parse("file://" + path);
             Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
             emailIntent.setType("plain/text");
-            emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"info@wikkno.com"});
+            emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"max-navsegda@mail.ru"});
             emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Пополнение");
             emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Мой номер:" + UserProfileDto.User.getPhone());
             emailIntent.putExtra(Intent.EXTRA_STREAM, pathUri);
