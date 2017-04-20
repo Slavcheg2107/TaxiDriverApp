@@ -13,7 +13,8 @@
         <ListView
             android:id="@+id/orderListView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="#ecebeb" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

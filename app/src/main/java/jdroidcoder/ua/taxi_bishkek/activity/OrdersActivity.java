@@ -144,24 +144,25 @@ public class OrdersActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.changeNumber) {
             final View view = LayoutInflater.from(this).inflate(R.layout.alert_style, null);
+            final AlertDialog alertDialog = new AlertDialog.Builder(this)
+                    .setView(view).create();
             final EditText phoneET = (EditText) view.findViewById(R.id.phone);
             phoneET.setText(UserProfileDto.User.getPhone());
-            new AlertDialog.Builder(this)
-                    .setView(view)
-                    .setCancelable(false)
-                    .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (!TextUtils.isEmpty(phoneET.getText().toString())) {
-                                UserProfileDto.User.setPhone(phoneET.getText().toString());
-                                new NetworkService().setDataToProfile(UserProfileDto.User.getEmail(),
-                                        UserProfileDto.User.getFirstName(),
-                                        UserProfileDto.User.getLastName(),
-                                        UserProfileDto.User.getPhone());
-                                dialog.dismiss();
-                            }
-                        }
-                    }).show();
+            view.findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!TextUtils.isEmpty(phoneET.getText().toString())) {
+                        UserProfileDto.User.setPhone(phoneET.getText().toString());
+                        new NetworkService().setDataToProfile(UserProfileDto.User.getEmail(),
+                                UserProfileDto.User.getFirstName(),
+                                UserProfileDto.User.getLastName(),
+                                UserProfileDto.User.getPhone());
+                        alertDialog.dismiss();
+                    }
+                }
+            });
+
+            alertDialog.show();
         } else if (item.getItemId() == R.id.uploadCheck) {
             selectCheck();
         }
