@@ -131,6 +131,9 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
         } else {
             orderAdapter.orderDtos = OrderDto.AcceptOreders.getOrders();
         }
+        if(orderAdapter.orderDtos.isEmpty()){
+            EventBus.getDefault().post(new ErrorMessageEvent("For update list swipe down"));
+        }
         orderAdapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
         getActivity().invalidateOptionsMenu();
