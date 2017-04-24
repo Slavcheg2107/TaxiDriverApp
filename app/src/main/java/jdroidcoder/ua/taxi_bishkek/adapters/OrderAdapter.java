@@ -52,30 +52,34 @@ public class OrderAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = LayoutInflater.from(context).inflate(R.layout.order_list_style, parent, false);
         final OrderDto orderDto = orderDtos.get(position);
-        ((TextView) convertView.findViewById(R.id.addressTV)).setText(orderDto.getPoints());
-        ((TextView) convertView.findViewById(R.id.whenTV)).setText(orderDto.getTime());
-        if (isAccept) {
-            convertView.findViewById(R.id.call).setVisibility(View.VISIBLE);
-            convertView.findViewById(R.id.close).setVisibility(View.VISIBLE);
+        try {
+            ((TextView) convertView.findViewById(R.id.addressTV)).setText(orderDto.getPoints());
+            ((TextView) convertView.findViewById(R.id.whenTV)).setText(orderDto.getTime());
+            if (isAccept) {
+                convertView.findViewById(R.id.call).setVisibility(View.VISIBLE);
+                convertView.findViewById(R.id.close).setVisibility(View.VISIBLE);
+            }
+            convertView.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new NetworkService().removeAcceptedOrder(orderDto.getId());
+                    OrderDto.AcceptOreders.getOrders().remove(orderDto);
+                    UserProfileDto.User.setBalance(UserProfileDto.User.getBalance() + 5);
+                    EventBus.getDefault().post(new UpdateAdapterEvent());
+                }
+            });
+            convertView.findViewById(R.id.call).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                    callIntent.setData(Uri.parse("tel:" + Uri.encode(orderDto.getUserPhone().trim())));
+                    callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(callIntent);
+                }
+            });
+        } catch (Exception e) {
+
         }
-        convertView.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new NetworkService().removeAcceptedOrder(orderDto.getId());
-                OrderDto.AcceptOreders.getOrders().remove(orderDto);
-                UserProfileDto.User.setBalance(UserProfileDto.User.getBalance() + 5);
-                EventBus.getDefault().post(new UpdateAdapterEvent());
-            }
-        });
-        convertView.findViewById(R.id.call).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                callIntent.setData(Uri.parse("tel:" + Uri.encode(orderDto.getUserPhone().trim())));
-                callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(callIntent);
-            }
-        });
         return convertView;
     }
 

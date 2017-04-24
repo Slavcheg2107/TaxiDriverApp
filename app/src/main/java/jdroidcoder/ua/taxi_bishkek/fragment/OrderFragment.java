@@ -66,6 +66,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                 networkService.getProfile(UserProfileDto.User.getEmail());
                 networkService.getOrders();
                 networkService.getAllAcceptOrders(UserProfileDto.User.getPhone());
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
         setHasOptionsMenu(true);
