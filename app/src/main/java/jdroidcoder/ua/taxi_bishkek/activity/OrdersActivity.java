@@ -48,6 +48,7 @@ import jdroidcoder.ua.taxi_bishkek.events.UpdateAdapterEvent;
 import jdroidcoder.ua.taxi_bishkek.fragment.OrderFragment;
 import jdroidcoder.ua.taxi_bishkek.model.UserProfileDto;
 import jdroidcoder.ua.taxi_bishkek.network.NetworkService;
+import jdroidcoder.ua.taxi_bishkek.service.LocationService;
 import jdroidcoder.ua.taxi_bishkek.service.UpdateOrdersService;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -78,6 +79,7 @@ public class OrdersActivity extends AppCompatActivity {
                             Manifest.permission.READ_EXTERNAL_STORAGE},
                     123);
         }
+        startService(new Intent(this, LocationService.class));
         myLocation = ((LocationManager) getSystemService(LOCATION_SERVICE)).
                 getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         startService(new Intent(this, UpdateOrdersService.class));
@@ -112,26 +114,14 @@ public class OrdersActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void onChangeLocationEvent(ChangeLocationEvent changeLocationEvent) {
-
-    }
-
-    @Subscribe
-    public void onUpdateAdapterEvent(UpdateAdapterEvent updateAdapterEvent) {
-    }
-
-    @Subscribe
     public void onMessageEvent(ErrorMessageEvent event) {
         Toast.makeText(this, event.getMessage(), Toast.LENGTH_LONG).show();
-    }
-
-    @Subscribe
-    public void onNewOrderEvent(OrderEvent event) {
     }
 
     @Override
     protected void onDestroy() {
         UpdateOrdersService.isRun = false;
+        stopService(new Intent(this, LocationService.class));
         stopService(new Intent(this, UpdateOrdersService.class));
         EventBus.getDefault().unregister(this);
         super.onDestroy();

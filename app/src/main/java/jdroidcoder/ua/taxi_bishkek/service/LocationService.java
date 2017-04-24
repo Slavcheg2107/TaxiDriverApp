@@ -12,6 +12,8 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 
+import jdroidcoder.ua.taxi_bishkek.activity.OrdersActivity;
+
 /**
  * Created by jdroidcoder on 07.04.17.
  */
@@ -38,7 +40,7 @@ public class LocationService extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-//        EventBus.getDefault().post(new ChangeLocationEvent(location));
+        OrdersActivity.myLocation = location;
     }
 
     @Override

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jdroidcoder.ua.taxi_bishkek.R;
+import jdroidcoder.ua.taxi_bishkek.activity.OrdersActivity;
 import jdroidcoder.ua.taxi_bishkek.events.UpdateAdapterEvent;
 import jdroidcoder.ua.taxi_bishkek.model.OrderDto;
 import jdroidcoder.ua.taxi_bishkek.model.UserProfileDto;
@@ -55,6 +56,10 @@ public class OrderAdapter extends BaseAdapter {
         try {
             ((TextView) convertView.findViewById(R.id.addressTV)).setText(orderDto.getPoints());
             ((TextView) convertView.findViewById(R.id.whenTV)).setText(orderDto.getTime());
+            if (OrdersActivity.myLocation == null) {
+                (convertView.findViewById(R.id.distanceTV)).setVisibility(View.GONE);
+            }
+            ((TextView) convertView.findViewById(R.id.distanceTV)).setText(String.valueOf(orderDto.getDistance()));
             if (isAccept) {
                 convertView.findViewById(R.id.call).setVisibility(View.VISIBLE);
                 convertView.findViewById(R.id.close).setVisibility(View.VISIBLE);
