@@ -1,6 +1,9 @@
 package jdroidcoder.ua.taxi_bishkek.service;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,12 +15,15 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 
+import jdroidcoder.ua.taxi_bishkek.R;
 import jdroidcoder.ua.taxi_bishkek.activity.OrdersActivity;
+import jdroidcoder.ua.taxi_bishkek.model.OrderDto;
 
 /**
  * Created by jdroidcoder on 07.04.17.
  */
 public class LocationService extends Service implements LocationListener {
+    private PendingIntent pendingIntent;
 
     @Nullable
     @Override
@@ -35,12 +41,35 @@ public class LocationService extends Service implements LocationListener {
         }
         ((LocationManager) getSystemService(LOCATION_SERVICE))
                 .requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        Intent intentOrdersActivity = new Intent(this, OrdersActivity.class);
+        pendingIntent = PendingIntent.getActivity(this, 0,
+                intentOrdersActivity, PendingIntent.FLAG_CANCEL_CURRENT);
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
+    public void onDestroy() {
+        stopForeground(true);
+        super.onDestroy();
     }
 
     @Override
     public void onLocationChanged(Location location) {
         OrdersActivity.myLocation = location;
+        int count = 0;
+        for (int i = 0; i < OrderDto.Oreders.getOrders().size(); i++) {
+            if (OrderDto.Oreders.getOrders().get(i).getDistance() <= 3000) {
+                count++;
+            }
+        }
+
+        Notification notification = new Notification.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Orders")
+                .setContentIntent(pendingIntent)
+                .setContentText("Available orders: " + count)
+                .build();
+        startForeground(106, notification);
     }
 
     @Override
