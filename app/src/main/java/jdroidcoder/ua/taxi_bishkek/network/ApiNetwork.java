@@ -1,5 +1,6 @@
 package jdroidcoder.ua.taxi_bishkek.network;
 
+import java.util.Date;
 import java.util.List;
 
 import jdroidcoder.ua.taxi_bishkek.model.OrderDto;
@@ -43,7 +44,8 @@ public interface ApiNetwork {
             @Field("pointB") String pointB,
             @Field("userPhone") String userPhone,
             @Field("status") String status,
-            @Field("driverPhone") String driverPhone);
+            @Field("driverPhone") String driverPhone,
+            @Field("acceptDate") Long acceptDate);
 
     @GET("getOrders")
     Call<List<OrderDto>> getOrders(@Query("userPhone") String userPhone);

@@ -4,6 +4,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import jdroidcoder.ua.taxi_bishkek.activity.OrdersActivity;
@@ -142,23 +143,34 @@ public class NetworkService {
         call.enqueue(new Callback<List<OrderDto>>() {
             @Override
             public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
+                for (int i = 0; i < response.body().size(); i++) {
+                    response.body().get(i).setDistance(gps2m(OrdersActivity.myLocation.getLatitude(),
+                            OrdersActivity.myLocation.getLongitude(),
+                            response.body().get(i).getPointACoordinate()[0],
+                            response.body().get(i).getPointACoordinate()[1]));
+                }
                 OrderDto.AcceptOreders.setItems(response.body());
                 EventBus.getDefault().post(new UpdateAdapterEvent());
             }
 
             @Override
             public void onFailure(Call<List<OrderDto>> call, Throwable t) {
-//                EventBus.getDefault().post(new ErrorMessageEvent(t.getMessage()));
+                EventBus.getDefault().post(new ErrorMessageEvent(t.getMessage()));
             }
         });
     }
 
     public void acceptOrder(Long id, String pointA, String pointB, String userPhone) {
         Call<OrderDto> call = retrofitConfig.getApiNetwork().acceptOrder(id, pointA, pointB,
-                userPhone, "accepted", UserProfileDto.User.getPhone());
+                userPhone, "accepted", UserProfileDto.User.getPhone(), new Date().getTime());
         call.enqueue(new Callback<OrderDto>() {
             @Override
             public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
+//                response.body().setDistance(gps2m(OrdersActivity.myLocation.getLatitude(),
+//                        OrdersActivity.myLocation.getLongitude(),
+//                        response.body().getPointACoordinate()[0],
+//                        response.body().getPointACoordinate()[1]));
+//                response.body().setAcceptDate(new Date());
                 OrderDto.AcceptOreders.add(response.body());
             }
 

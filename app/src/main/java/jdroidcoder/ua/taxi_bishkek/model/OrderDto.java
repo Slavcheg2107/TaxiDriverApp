@@ -18,6 +18,7 @@ public class OrderDto {
     private double[] pointACoordinate;
     private double[] pointBCoordinate;
     private Integer distance;
+    private Long acceptDate;
 
     public OrderDto() {
     }
@@ -110,6 +111,14 @@ public class OrderDto {
 
     public void setDistance(Integer distance) {
         this.distance = distance;
+    }
+
+    public Date getAcceptDate() {
+        return new Date(acceptDate);
+    }
+
+    public void setAcceptDate(Long acceptDate) {
+        this.acceptDate = acceptDate;
     }
 
     @Override

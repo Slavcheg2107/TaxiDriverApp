@@ -12,6 +12,7 @@ import android.widget.TextView;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import jdroidcoder.ua.taxi_bishkek.R;
@@ -59,17 +60,22 @@ public class OrderAdapter extends BaseAdapter {
             if (OrdersActivity.myLocation == null) {
                 (convertView.findViewById(R.id.distanceTV)).setVisibility(View.GONE);
             }
-            ((TextView) convertView.findViewById(R.id.distanceTV)).setText(String.valueOf(orderDto.getDistance())+"m");
+            ((TextView) convertView.findViewById(R.id.distanceTV)).setText(String.valueOf(orderDto.getDistance()) + "m");
             if (isAccept) {
+                ((TextView) convertView.findViewById(R.id.distanceTV)).setVisibility(View.GONE);
                 convertView.findViewById(R.id.call).setVisibility(View.VISIBLE);
                 convertView.findViewById(R.id.close).setVisibility(View.VISIBLE);
             }
             convertView.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new NetworkService().removeAcceptedOrder(orderDto.getId());
-                    OrderDto.AcceptOreders.getOrders().remove(orderDto);
-                    UserProfileDto.User.setBalance(UserProfileDto.User.getBalance() + 5);
+                    if (new Date().getTime() - orderDto.getAcceptDate().getTime() >= 600000) {
+                        new NetworkService().removeOrder(orderDto);
+                    } else {
+                        new NetworkService().removeAcceptedOrder(orderDto.getId());
+                        OrderDto.AcceptOreders.getOrders().remove(orderDto);
+                        UserProfileDto.User.setBalance(UserProfileDto.User.getBalance() + 5);
+                    }
                     EventBus.getDefault().post(new UpdateAdapterEvent());
                 }
             });
