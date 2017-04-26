@@ -14,14 +14,19 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import jdroidcoder.ua.taxi_bishkek.R;
 import jdroidcoder.ua.taxi_bishkek.activity.OrdersActivity;
+import jdroidcoder.ua.taxi_bishkek.events.UpdateNotificationEvent;
 import jdroidcoder.ua.taxi_bishkek.model.OrderDto;
 
 /**
  * Created by jdroidcoder on 07.04.17.
  */
 public class LocationService extends Service implements LocationListener {
+    private Notification notification;
 
     @Nullable
     @Override
@@ -39,6 +44,12 @@ public class LocationService extends Service implements LocationListener {
         }
         ((LocationManager) getSystemService(LOCATION_SERVICE))
                 .requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        EventBus.getDefault().register(this);
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Subscribe
+    public void onUpdateNotificationEvent(UpdateNotificationEvent updateNotificationEvent) {
         int count = 0;
         for (int i = 0; i < OrderDto.Oreders.getOrders().size(); i++) {
             if (OrderDto.Oreders.getOrders().get(i).getDistance() <= 3000) {
@@ -46,22 +57,22 @@ public class LocationService extends Service implements LocationListener {
             }
         }
         Intent intentOrdersActivity = new Intent(this, OrdersActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intentOrdersActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                 intentOrdersActivity, 0);
-        Notification notification = new Notification.Builder(this)
+        notification = new Notification.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Orders")
                 .setContentIntent(pendingIntent)
                 .setContentText("Available orders: " + count)
                 .build();
         startForeground(106, notification);
-        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
         stopForeground(true);
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 

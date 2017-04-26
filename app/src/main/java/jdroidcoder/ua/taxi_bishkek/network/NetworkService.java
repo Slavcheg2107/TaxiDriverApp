@@ -13,11 +13,10 @@ import jdroidcoder.ua.taxi_bishkek.events.MoveNextEvent;
 import jdroidcoder.ua.taxi_bishkek.events.ShowMapEvent;
 import jdroidcoder.ua.taxi_bishkek.events.TypePhoneEvent;
 import jdroidcoder.ua.taxi_bishkek.events.UpdateAdapterEvent;
+import jdroidcoder.ua.taxi_bishkek.events.UpdateNotificationEvent;
 import jdroidcoder.ua.taxi_bishkek.model.OrderDto;
 import jdroidcoder.ua.taxi_bishkek.model.UserCoordinateDto;
 import jdroidcoder.ua.taxi_bishkek.model.UserProfileDto;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -113,11 +112,11 @@ public class NetworkService {
                 }
                 OrderDto.Oreders.setItems(response.body());
                 EventBus.getDefault().post(new UpdateAdapterEvent());
+                EventBus.getDefault().post(new UpdateNotificationEvent());
             }
 
             @Override
             public void onFailure(Call<List<OrderDto>> call, Throwable t) {
-//                EventBus.getDefault().post(new ErrorMessageEvent(t.getMessage()));
             }
         });
     }
@@ -166,11 +165,7 @@ public class NetworkService {
         call.enqueue(new Callback<OrderDto>() {
             @Override
             public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
-//                response.body().setDistance(gps2m(OrdersActivity.myLocation.getLatitude(),
-//                        OrdersActivity.myLocation.getLongitude(),
-//                        response.body().getPointACoordinate()[0],
-//                        response.body().getPointACoordinate()[1]));
-//                response.body().setAcceptDate(new Date());
+                EventBus.getDefault().post(new UpdateNotificationEvent());
                 OrderDto.AcceptOreders.add(response.body());
             }
 
@@ -236,6 +231,7 @@ public class NetworkService {
                 OrderDto.Oreders.add(response.body());
                 OrderDto.AcceptOreders.getOrders().remove(response.body());
                 editBalance(5);
+                EventBus.getDefault().post(new UpdateNotificationEvent());
             }
 
             @Override

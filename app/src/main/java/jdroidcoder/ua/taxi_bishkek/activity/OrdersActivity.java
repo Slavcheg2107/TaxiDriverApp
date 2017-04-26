@@ -3,56 +3,40 @@ package jdroidcoder.ua.taxi_bishkek.activity;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
-import java.io.File;
-import java.util.Date;
 
 import butterknife.ButterKnife;
 import jdroidcoder.ua.taxi_bishkek.R;
 import jdroidcoder.ua.taxi_bishkek.Utils.ImageFilePath;
 import jdroidcoder.ua.taxi_bishkek.adapters.ViewPagerAdapter;
 import jdroidcoder.ua.taxi_bishkek.events.ChangeListViewEvent;
-import jdroidcoder.ua.taxi_bishkek.events.ChangeLocationEvent;
 import jdroidcoder.ua.taxi_bishkek.events.ErrorMessageEvent;
-import jdroidcoder.ua.taxi_bishkek.events.OrderEvent;
-import jdroidcoder.ua.taxi_bishkek.events.UpdateAdapterEvent;
 import jdroidcoder.ua.taxi_bishkek.fragment.OrderFragment;
 import jdroidcoder.ua.taxi_bishkek.model.UserProfileDto;
 import jdroidcoder.ua.taxi_bishkek.network.NetworkService;
 import jdroidcoder.ua.taxi_bishkek.service.LocationService;
 import jdroidcoder.ua.taxi_bishkek.service.UpdateOrdersService;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 /**
  * Created by jdroidcoder on 07.04.17.

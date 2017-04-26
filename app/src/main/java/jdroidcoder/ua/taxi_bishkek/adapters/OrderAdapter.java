@@ -60,9 +60,13 @@ public class OrderAdapter extends BaseAdapter {
             if (OrdersActivity.myLocation == null) {
                 (convertView.findViewById(R.id.distanceTV)).setVisibility(View.GONE);
             }
-            ((TextView) convertView.findViewById(R.id.distanceTV)).setText(String.valueOf(orderDto.getDistance()) + "m");
+            if (String.valueOf(orderDto.getDistance()).equals("null")) {
+                (convertView.findViewById(R.id.distanceTV)).setVisibility(View.GONE);
+            } else {
+                ((TextView) convertView.findViewById(R.id.distanceTV)).setText(String.valueOf(orderDto.getDistance()) + "m");
+            }
             if (isAccept) {
-                ((TextView) convertView.findViewById(R.id.distanceTV)).setVisibility(View.GONE);
+                (convertView.findViewById(R.id.distanceTV)).setVisibility(View.GONE);
                 convertView.findViewById(R.id.call).setVisibility(View.VISIBLE);
                 convertView.findViewById(R.id.close).setVisibility(View.VISIBLE);
             }
