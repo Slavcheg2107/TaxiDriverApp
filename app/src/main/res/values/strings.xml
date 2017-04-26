@@ -13,4 +13,5 @@
     <string name="changeNumber">Change number</string>
     <string name="balance">Your balance:</string>
     <string name="uploadCheck">Upload check</string>
+    <string name="how_replenish_balance">How to replenish the balance?</string>
 </resources>

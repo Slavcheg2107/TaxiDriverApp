@@ -59,7 +59,7 @@ public class OrderAdapter extends BaseAdapter {
             if (OrdersActivity.myLocation == null) {
                 (convertView.findViewById(R.id.distanceTV)).setVisibility(View.GONE);
             }
-            ((TextView) convertView.findViewById(R.id.distanceTV)).setText(String.valueOf(orderDto.getDistance()));
+            ((TextView) convertView.findViewById(R.id.distanceTV)).setText(String.valueOf(orderDto.getDistance())+"m");
             if (isAccept) {
                 convertView.findViewById(R.id.call).setVisibility(View.VISIBLE);
                 convertView.findViewById(R.id.close).setVisibility(View.VISIBLE);

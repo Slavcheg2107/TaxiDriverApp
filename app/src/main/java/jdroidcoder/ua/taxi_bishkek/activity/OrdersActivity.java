@@ -158,6 +158,19 @@ public class OrdersActivity extends AppCompatActivity {
             alertDialog.show();
         } else if (item.getItemId() == R.id.uploadCheck) {
             selectCheck();
+        } else if (item.getItemId() == R.id.replenishBalance) {
+            final View view = LayoutInflater.from(this).inflate(R.layout.replenish_balance_alert, null);
+            final AlertDialog alertDialog = new AlertDialog.Builder(this)
+                    .setTitle(getResources().getString(R.string.how_replenish_balance))
+                    .setView(view).create();
+            view.findViewById(R.id.ok_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.dismiss();
+                }
+            });
+
+            alertDialog.show();
         }
         return super.onOptionsItemSelected(item);
     }

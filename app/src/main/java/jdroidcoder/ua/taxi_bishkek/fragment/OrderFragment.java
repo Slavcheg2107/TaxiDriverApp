@@ -3,6 +3,7 @@ package jdroidcoder.ua.taxi_bishkek.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -48,12 +49,15 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
     public static boolean isShowMap = false;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+    private View view;
+    private Snackbar snackbar;
+    private boolean isShowSnackbar = false;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.order_list_view, container, false);
+        view = inflater.inflate(R.layout.order_list_view, container, false);
         unbinder = ButterKnife.bind(this, view);
         orderAdapter = new OrderAdapter(getActivity());
         orderListView.setAdapter(orderAdapter);
@@ -71,6 +75,12 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
         });
         setHasOptionsMenu(true);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        snackbar = Snackbar.make(view, "For update list swipe down", Snackbar.LENGTH_INDEFINITE);
     }
 
     @Override
@@ -131,8 +141,14 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
         } else {
             orderAdapter.orderDtos = OrderDto.AcceptOreders.getOrders();
         }
-        if(orderAdapter.orderDtos.isEmpty()){
-            EventBus.getDefault().post(new ErrorMessageEvent("For update list swipe down"));
+        if (orderAdapter.orderDtos.isEmpty()) {
+            if (!isShowSnackbar) {
+                snackbar.show();
+                isShowSnackbar = true;
+            }
+        } else {
+            isShowSnackbar = false;
+            snackbar.dismiss();
         }
         orderAdapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
