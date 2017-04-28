@@ -115,6 +115,10 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                         return;
                     }
                     orderDto = OrderDto.Oreders.getOrders().get(position);
+                    if(orderDto.getUserPhone().equals(UserProfileDto.User.getPhone())){
+                        EventBus.getDefault().post(new ErrorMessageEvent("This is you Order"));
+                        return;
+                    }
                     networkService.acceptOrder(orderDto.getId(), orderDto.getPointA(), orderDto.getPointB(),
                             orderDto.getUserPhone());
                     networkService.editBalance(-5);
