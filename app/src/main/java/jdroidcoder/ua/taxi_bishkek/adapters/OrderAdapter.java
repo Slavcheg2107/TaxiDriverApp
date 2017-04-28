@@ -17,6 +17,7 @@ import java.util.List;
 
 import jdroidcoder.ua.taxi_bishkek.R;
 import jdroidcoder.ua.taxi_bishkek.activity.OrdersActivity;
+import jdroidcoder.ua.taxi_bishkek.events.ErrorMessageEvent;
 import jdroidcoder.ua.taxi_bishkek.events.UpdateAdapterEvent;
 import jdroidcoder.ua.taxi_bishkek.model.OrderDto;
 import jdroidcoder.ua.taxi_bishkek.model.UserProfileDto;
@@ -51,7 +52,7 @@ public class OrderAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         convertView = LayoutInflater.from(context).inflate(R.layout.order_list_style, parent, false);
         final OrderDto orderDto = orderDtos.get(position);
         try {
@@ -69,7 +70,18 @@ public class OrderAdapter extends BaseAdapter {
                 (convertView.findViewById(R.id.distanceTV)).setVisibility(View.GONE);
                 convertView.findViewById(R.id.call).setVisibility(View.VISIBLE);
                 convertView.findViewById(R.id.close).setVisibility(View.VISIBLE);
+                convertView.findViewById(R.id.showMap).setVisibility(View.VISIBLE);
             }
+            convertView.findViewById(R.id.showMap).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        new NetworkService().getUserCoordinate(orderDto.getUserPhone());
+                    } catch (Exception e) {
+                        EventBus.getDefault().post(new ErrorMessageEvent(e.getMessage()));
+                    }
+                }
+            });
             convertView.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
