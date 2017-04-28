@@ -52,8 +52,12 @@ public class LocationService extends Service implements LocationListener {
     public void onUpdateNotificationEvent(UpdateNotificationEvent updateNotificationEvent) {
         int count = 0;
         for (int i = 0; i < OrderDto.Oreders.getOrders().size(); i++) {
-            if (OrderDto.Oreders.getOrders().get(i).getDistance() <= 3000) {
-                count++;
+            try {
+                if (OrderDto.Oreders.getOrders().get(i).getDistance() <= 3000) {
+                    count++;
+                }
+            } catch (Exception e) {
+
             }
         }
         Intent intentOrdersActivity = new Intent(this, OrdersActivity.class);

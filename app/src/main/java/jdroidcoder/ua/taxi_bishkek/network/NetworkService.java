@@ -76,12 +76,16 @@ public class NetworkService {
         call.enqueue(new Callback<UserProfileDto>() {
             @Override
             public void onResponse(Call<UserProfileDto> call, Response<UserProfileDto> response) {
-                UserProfileDto.User.setPhone(response.body().getPhone());
-                UserProfileDto.User.setFirstName(response.body().getFirstName());
-                UserProfileDto.User.setLastName(response.body().getLastName());
-                UserProfileDto.User.setEmail(response.body().getEmail());
-                UserProfileDto.User.setBalance(response.body().getBalance());
-                EventBus.getDefault().post(new MoveNextEvent());
+                try {
+                    UserProfileDto.User.setPhone(response.body().getPhone());
+                    UserProfileDto.User.setFirstName(response.body().getFirstName());
+                    UserProfileDto.User.setLastName(response.body().getLastName());
+                    UserProfileDto.User.setEmail(response.body().getEmail());
+                    UserProfileDto.User.setBalance(response.body().getBalance());
+                    EventBus.getDefault().post(new MoveNextEvent());
+                } catch (Exception e) {
+                    EventBus.getDefault().post(new ErrorMessageEvent("Your phone used"));
+                }
             }
 
             @Override
@@ -142,11 +146,15 @@ public class NetworkService {
         call.enqueue(new Callback<List<OrderDto>>() {
             @Override
             public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
-                for (int i = 0; i < response.body().size(); i++) {
-                    response.body().get(i).setDistance(gps2m(OrdersActivity.myLocation.getLatitude(),
-                            OrdersActivity.myLocation.getLongitude(),
-                            response.body().get(i).getPointACoordinate()[0],
-                            response.body().get(i).getPointACoordinate()[1]));
+                try {
+                    for (int i = 0; i < response.body().size(); i++) {
+                        response.body().get(i).setDistance(gps2m(OrdersActivity.myLocation.getLatitude(),
+                                OrdersActivity.myLocation.getLongitude(),
+                                response.body().get(i).getPointACoordinate()[0],
+                                response.body().get(i).getPointACoordinate()[1]));
+                    }
+                }catch (Exception e){
+
                 }
                 OrderDto.AcceptOreders.setItems(response.body());
                 EventBus.getDefault().post(new UpdateAdapterEvent());

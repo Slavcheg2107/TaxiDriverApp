@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private NetworkService networkService;
     private UserProfileDto userProfileDto = new UserProfileDto();
     private String email;
+    private boolean isSend = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,11 +92,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
+            if (!isSend) {
             GoogleSignInAccount acct = result.getSignInAccount();
             userProfileDto.setFirstName(acct.getGivenName());
             userProfileDto.setLastName(acct.getFamilyName());
             email = acct.getEmail();
             networkService.register(acct.getEmail(), acct.getId());
+            } else {
+                isSend = false;
+            }
         } else {
             Toast.makeText(this, getString(R.string.unknow_error), Toast.LENGTH_LONG).show();
         }
@@ -122,20 +127,25 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Subscribe
     public void onTypeEvent(TypePhoneEvent event) {
         final View view = LayoutInflater.from(this).inflate(R.layout.alert_style, null);
-        new AlertDialog.Builder(this)
+        final AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setView(view)
-                .setCancelable(false)
-                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        EditText phoneET = (EditText) view.findViewById(R.id.phone);
-                        if (!TextUtils.isEmpty(phoneET.getText().toString())) {
-                            userProfileDto.setPhone(phoneET.getText().toString());
-                            networkService.setDataToProfile(email, userProfileDto.getFirstName(),
-                                    userProfileDto.getLastName(), userProfileDto.getPhone());
-                            dialog.dismiss();
-                        }
-                    }
-                }).show();
+                .create();
+        final EditText phoneET = (EditText) view.findViewById(R.id.phone);
+        phoneET.setTextColor(getResources().getColor(android.R.color.white));
+        phoneET.setText(UserProfileDto.User.getPhone());
+        view.findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText phoneET = (EditText) view.findViewById(R.id.phone);
+                if (!TextUtils.isEmpty(phoneET.getText().toString())) {
+                    userProfileDto.setPhone(phoneET.getText().toString());
+                    networkService.setDataToProfile(email, userProfileDto.getFirstName(),
+                            userProfileDto.getLastName(), userProfileDto.getPhone());
+                    alertDialog.dismiss();
+                }
+            }
+        });
+
+        alertDialog.show();
     }
 }
