@@ -240,10 +240,14 @@ public class NetworkService {
         call.enqueue(new Callback<OrderDto>() {
             @Override
             public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
-                OrderDto.Oreders.add(response.body());
-                OrderDto.AcceptOreders.getOrders().remove(response.body());
-                editBalance(5);
-                EventBus.getDefault().post(new UpdateNotificationEvent());
+                try {
+                    OrderDto.Oreders.add(response.body());
+                    OrderDto.AcceptOreders.getOrders().remove(response.body());
+                    editBalance(5);
+                    EventBus.getDefault().post(new UpdateNotificationEvent());
+                }catch (Exception e){
+                    EventBus.getDefault().post(new ErrorMessageEvent(e.getMessage()));
+                }
             }
 
             @Override
