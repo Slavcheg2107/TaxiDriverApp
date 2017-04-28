@@ -109,18 +109,22 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
         OrderDto orderDto;
         if (!isOrders) {
             if (OrderDto.AcceptOreders.getOrders().size() < 4) {
-                if (checkBalance()) {
-                    EventBus.getDefault().post(new ErrorMessageEvent("U are have small balance"));
-                    return;
+                try {
+                    if (checkBalance()) {
+                        EventBus.getDefault().post(new ErrorMessageEvent("U are have small balance"));
+                        return;
+                    }
+                    orderDto = OrderDto.Oreders.getOrders().get(position);
+                    networkService.acceptOrder(orderDto.getId(), orderDto.getPointA(), orderDto.getPointB(),
+                            orderDto.getUserPhone());
+                    networkService.editBalance(-5);
+                    UserProfileDto.User.setBalance(UserProfileDto.User.getBalance() - 5);
+                    OrderDto.Oreders.getOrders().remove(position);
+                    getActivity().invalidateOptionsMenu();
+                    orderAdapter.notifyDataSetChanged();
+                }catch (Exception e){
+                    EventBus.getDefault().post(new ErrorMessageEvent(e.getMessage()));
                 }
-                orderDto = OrderDto.Oreders.getOrders().get(position);
-                networkService.acceptOrder(orderDto.getId(), orderDto.getPointA(), orderDto.getPointB(),
-                        orderDto.getUserPhone());
-                networkService.editBalance(-5);
-                UserProfileDto.User.setBalance(UserProfileDto.User.getBalance() - 5);
-                OrderDto.Oreders.getOrders().remove(position);
-                getActivity().invalidateOptionsMenu();
-                orderAdapter.notifyDataSetChanged();
             } else {
                 EventBus.getDefault().post(new ErrorMessageEvent("U are have full orders"));
             }
@@ -129,7 +133,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                 orderDto = OrderDto.AcceptOreders.getOrders().get(position);
                 networkService.getUserCoordinate(orderDto.getUserPhone());
             }catch (Exception e){
-                System.out.println(e.getMessage());
+                EventBus.getDefault().post(new ErrorMessageEvent(e.getMessage()));
             }
         }
     }
