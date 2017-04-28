@@ -125,8 +125,12 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                 EventBus.getDefault().post(new ErrorMessageEvent("U are have full orders"));
             }
         } else {
-            orderDto = OrderDto.AcceptOreders.getOrders().get(position);
-            networkService.getUserCoordinate(orderDto.getUserPhone());
+            try {
+                orderDto = OrderDto.AcceptOreders.getOrders().get(position);
+                networkService.getUserCoordinate(orderDto.getUserPhone());
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
         }
     }
 
