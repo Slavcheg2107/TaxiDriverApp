@@ -173,8 +173,12 @@ public class NetworkService {
         call.enqueue(new Callback<OrderDto>() {
             @Override
             public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
-                EventBus.getDefault().post(new UpdateNotificationEvent());
-                OrderDto.AcceptOreders.add(response.body());
+                try {
+                    EventBus.getDefault().post(new UpdateNotificationEvent());
+                    OrderDto.AcceptOreders.add(response.body());
+                }catch (Exception e){
+                    EventBus.getDefault().post(new ErrorMessageEvent("Order is done"));
+                }
             }
 
             @Override
