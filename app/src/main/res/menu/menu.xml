@@ -7,9 +7,9 @@
         android:title="@string/balance"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/changeNumber"
-        android:title="@string/changeNumber" />
+    <!--<item-->
+        <!--android:id="@+id/changeNumber"-->
+        <!--android:title="@string/changeNumber" />-->
 
     <item
         android:id="@+id/uploadCheck"

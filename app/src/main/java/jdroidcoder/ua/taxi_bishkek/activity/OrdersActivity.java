@@ -119,28 +119,29 @@ public class OrdersActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.changeNumber) {
-            final View view = LayoutInflater.from(this).inflate(R.layout.alert_style, null);
-            final AlertDialog alertDialog = new AlertDialog.Builder(this)
-                    .setView(view).create();
-            final EditText phoneET = (EditText) view.findViewById(R.id.phone);
-            phoneET.setText(UserProfileDto.User.getPhone());
-            view.findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!TextUtils.isEmpty(phoneET.getText().toString())) {
-                        UserProfileDto.User.setPhone(phoneET.getText().toString());
-                        new NetworkService().setDataToProfile(UserProfileDto.User.getEmail(),
-                                UserProfileDto.User.getFirstName(),
-                                UserProfileDto.User.getLastName(),
-                                UserProfileDto.User.getPhone());
-                        alertDialog.dismiss();
-                    }
-                }
-            });
-
-            alertDialog.show();
-        } else if (item.getItemId() == R.id.uploadCheck) {
+//        if (item.getItemId() == R.id.changeNumber) {
+//            final View view = LayoutInflater.from(this).inflate(R.layout.alert_style, null);
+//            final AlertDialog alertDialog = new AlertDialog.Builder(this)
+//                    .setView(view).create();
+//            final EditText phoneET = (EditText) view.findViewById(R.id.phone);
+//            phoneET.setText(UserProfileDto.User.getPhone());
+//            view.findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (!TextUtils.isEmpty(phoneET.getText().toString())) {
+//                        UserProfileDto.User.setPhone(phoneET.getText().toString());
+//                        new NetworkService().setDataToProfile(UserProfileDto.User.getEmail(),
+//                                UserProfileDto.User.getFirstName(),
+//                                UserProfileDto.User.getLastName(),
+//                                UserProfileDto.User.getPhone());
+//                        alertDialog.dismiss();
+//                    }
+//                }
+//            });
+//
+//            alertDialog.show();
+//        } else
+        if (item.getItemId() == R.id.uploadCheck) {
             selectCheck();
         } else if (item.getItemId() == R.id.replenishBalance) {
             final View view = LayoutInflater.from(this).inflate(R.layout.replenish_balance_alert, null);

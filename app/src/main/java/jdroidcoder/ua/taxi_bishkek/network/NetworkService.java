@@ -211,12 +211,17 @@ public class NetworkService {
         call.enqueue(new Callback<UserCoordinateDto>() {
             @Override
             public void onResponse(Call<UserCoordinateDto> call, Response<UserCoordinateDto> response) {
-                EventBus.getDefault().post(new ShowMapEvent(response.body().getLat(), response.body().getLng()));
+                try {
+                    EventBus.getDefault().post(new ShowMapEvent(response.body().getLat(), response.body().getLng()));
+                }catch (Exception e){
+                    EventBus.getDefault().post(new ShowMapEvent());
+                }
             }
 
             @Override
             public void onFailure(Call<UserCoordinateDto> call, Throwable t) {
-                EventBus.getDefault().post(new ErrorMessageEvent(t.getMessage()));
+                EventBus.getDefault().post(new ErrorMessageEvent("User not get coordinate"));
+                EventBus.getDefault().post(new ShowMapEvent());
             }
         });
     }
@@ -283,6 +288,19 @@ public class NetworkService {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 EventBus.getDefault().post(new ErrorMessageEvent("uploaded"));
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                EventBus.getDefault().post(new ErrorMessageEvent(t.getMessage()));
+            }
+        });
+    }
+    public void setCoordinate(Double lat, Double lng) {
+        Call<Void> call = retrofitConfig.getApiNetwork().setCoordinate(UserProfileDto.User.getPhone(), lat, lng);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
             }
 
             @Override

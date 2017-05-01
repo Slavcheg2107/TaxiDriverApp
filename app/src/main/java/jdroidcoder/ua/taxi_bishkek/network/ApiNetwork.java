@@ -77,4 +77,10 @@ public interface ApiNetwork {
 
     @POST("uploadCheck")
     Call<Void> uploadCheck(@Body RequestBody file);
+
+    @FormUrlEncoded
+    @POST("setCoordinate")
+    Call<Void> setCoordinate(@Field("userPhone") String userPhone,
+                             @Field("lat") Double lat,
+                             @Field("lng") Double lng);
 }

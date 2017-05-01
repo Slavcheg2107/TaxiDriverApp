@@ -1,6 +1,7 @@
 package jdroidcoder.ua.taxi_bishkek.activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +54,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         networkService = new NetworkService();
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_PHONE_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.READ_PHONE_STATE},
+                    123);
+        }
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -93,11 +103,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             if (!isSend) {
-            GoogleSignInAccount acct = result.getSignInAccount();
-            userProfileDto.setFirstName(acct.getGivenName());
-            userProfileDto.setLastName(acct.getFamilyName());
-            email = acct.getEmail();
-            networkService.register(acct.getEmail(), acct.getId());
+                GoogleSignInAccount acct = result.getSignInAccount();
+                userProfileDto.setFirstName(acct.getGivenName());
+                userProfileDto.setLastName(acct.getFamilyName());
+                email = acct.getEmail();
+                networkService.register(acct.getEmail(), acct.getId());
             } else {
                 isSend = false;
             }
@@ -126,26 +136,29 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     @Subscribe
     public void onTypeEvent(TypePhoneEvent event) {
-        final View view = LayoutInflater.from(this).inflate(R.layout.alert_style, null);
-        final AlertDialog alertDialog = new AlertDialog.Builder(this)
-                .setView(view)
-                .create();
-        final EditText phoneET = (EditText) view.findViewById(R.id.phone);
-        phoneET.setTextColor(getResources().getColor(android.R.color.white));
-        phoneET.setText(UserProfileDto.User.getPhone());
-        view.findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText phoneET = (EditText) view.findViewById(R.id.phone);
-                if (!TextUtils.isEmpty(phoneET.getText().toString())) {
-                    userProfileDto.setPhone(phoneET.getText().toString());
-                    networkService.setDataToProfile(email, userProfileDto.getFirstName(),
-                            userProfileDto.getLastName(), userProfileDto.getPhone());
-                    alertDialog.dismiss();
-                }
-            }
-        });
-
-        alertDialog.show();
+//        final View view = LayoutInflater.from(this).inflate(R.layout.alert_style, null);
+//        final AlertDialog alertDialog = new AlertDialog.Builder(this)
+//                .setView(view)
+//                .create();
+//        final EditText phoneET = (EditText) view.findViewById(R.id.phone);
+//        phoneET.setTextColor(getResources().getColor(android.R.color.white));
+//        phoneET.setText(UserProfileDto.User.getPhone());
+//        view.findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                EditText phoneET = (EditText) view.findViewById(R.id.phone);
+//                if (!TextUtils.isEmpty(phoneET.getText().toString())) {
+        TelephonyManager tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        String mPhoneNumber = tMgr.getLine1Number();
+        System.out.println(mPhoneNumber);
+        userProfileDto.setPhone(mPhoneNumber);
+        networkService.setDataToProfile(email, userProfileDto.getFirstName(),
+                userProfileDto.getLastName(), userProfileDto.getPhone());
+//                    alertDialog.dismiss();
+//    }
+//            }
+//        });
+//
+//        alertDialog.show();
     }
 }

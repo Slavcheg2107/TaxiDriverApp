@@ -19,6 +19,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import jdroidcoder.ua.taxi_bishkek.R;
 import jdroidcoder.ua.taxi_bishkek.activity.OrdersActivity;
+import jdroidcoder.ua.taxi_bishkek.events.ChangeLocationEvent;
 import jdroidcoder.ua.taxi_bishkek.events.UpdateNotificationEvent;
 import jdroidcoder.ua.taxi_bishkek.model.OrderDto;
 
@@ -83,6 +84,7 @@ public class LocationService extends Service implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         OrdersActivity.myLocation = location;
+        EventBus.getDefault().post(new ChangeLocationEvent(location));
     }
 
     @Override

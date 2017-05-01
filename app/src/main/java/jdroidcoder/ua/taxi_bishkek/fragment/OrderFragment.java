@@ -26,6 +26,7 @@ import jdroidcoder.ua.taxi_bishkek.R;
 import jdroidcoder.ua.taxi_bishkek.activity.MapsActivity;
 import jdroidcoder.ua.taxi_bishkek.adapters.OrderAdapter;
 import jdroidcoder.ua.taxi_bishkek.events.ChangeListViewEvent;
+import jdroidcoder.ua.taxi_bishkek.events.ChangeLocationEvent;
 import jdroidcoder.ua.taxi_bishkek.events.ErrorMessageEvent;
 import jdroidcoder.ua.taxi_bishkek.events.ShowMapEvent;
 import jdroidcoder.ua.taxi_bishkek.events.UpdateAdapterEvent;
@@ -174,5 +175,11 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                     .putExtra("userCoordinate", showMapEvent));
             isShowMap = true;
         }
+    }
+
+    @Subscribe
+    public void onChangeLocationEvent(ChangeLocationEvent changeLocationEvent) {
+        networkService.setCoordinate(changeLocationEvent.getLocation().getLatitude(),
+                changeLocationEvent.getLocation().getLongitude());
     }
 }
