@@ -27,6 +27,7 @@ import jdroidcoder.ua.taxi_bishkek.activity.MapsActivity;
 import jdroidcoder.ua.taxi_bishkek.adapters.OrderAdapter;
 import jdroidcoder.ua.taxi_bishkek.events.ChangeListViewEvent;
 import jdroidcoder.ua.taxi_bishkek.events.ChangeLocationEvent;
+import jdroidcoder.ua.taxi_bishkek.events.ConnectionErrorEvent;
 import jdroidcoder.ua.taxi_bishkek.events.ErrorMessageEvent;
 import jdroidcoder.ua.taxi_bishkek.events.ShowMapEvent;
 import jdroidcoder.ua.taxi_bishkek.events.UpdateAdapterEvent;
@@ -116,7 +117,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                         return;
                     }
                     orderDto = OrderDto.Oreders.getOrders().get(position);
-                    if(orderDto.getUserPhone().equals(UserProfileDto.User.getPhone())){
+                    if (orderDto.getUserPhone().equals(UserProfileDto.User.getPhone())) {
                         EventBus.getDefault().post(new ErrorMessageEvent("This is you Order"));
                         return;
                     }
@@ -127,7 +128,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                     OrderDto.Oreders.getOrders().remove(position);
                     getActivity().invalidateOptionsMenu();
                     orderAdapter.notifyDataSetChanged();
-                }catch (Exception e){
+                } catch (Exception e) {
                     EventBus.getDefault().post(new ErrorMessageEvent(e.getMessage()));
                 }
             } else {
@@ -137,7 +138,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
             try {
                 orderDto = OrderDto.AcceptOreders.getOrders().get(position);
                 networkService.getUserCoordinate(orderDto.getUserPhone());
-            }catch (Exception e){
+            } catch (Exception e) {
                 EventBus.getDefault().post(new ErrorMessageEvent(e.getMessage()));
             }
         }
@@ -174,6 +175,14 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
             startActivity(new Intent(getActivity(), MapsActivity.class)
                     .putExtra("userCoordinate", showMapEvent));
             isShowMap = true;
+        }
+    }
+
+    @Subscribe
+    public void onConnectionErrorEvent(ConnectionErrorEvent connectionErrorEvent) {
+        if(!snackbar.isShown()){
+            snackbar.setText("Connection error");
+            snackbar.show();
         }
     }
 
