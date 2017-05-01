@@ -90,7 +90,7 @@ public class OrderAdapter extends BaseAdapter {
                     } else {
                         new NetworkService().removeAcceptedOrder(orderDto.getId());
                         OrderDto.AcceptOreders.getOrders().remove(orderDto);
-                        UserProfileDto.User.setBalance(UserProfileDto.User.getBalance() + 5);
+                        UserProfileDto.User.setBalance(UserProfileDto.User.getBalance() + 10);
                     }
                     EventBus.getDefault().post(new UpdateAdapterEvent());
                 }
