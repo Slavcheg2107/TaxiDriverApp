@@ -103,11 +103,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             if (!isSend) {
-                GoogleSignInAccount acct = result.getSignInAccount();
-                userProfileDto.setFirstName(acct.getGivenName());
-                userProfileDto.setLastName(acct.getFamilyName());
-                email = acct.getEmail();
-                networkService.register(acct.getEmail(), acct.getId());
+                try {
+                    GoogleSignInAccount acct = result.getSignInAccount();
+                    userProfileDto.setFirstName(acct.getGivenName());
+                    userProfileDto.setLastName(acct.getFamilyName());
+                    email = acct.getEmail();
+                    networkService.register(acct.getEmail(), acct.getId());
+                } catch (Exception e) {
+                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
             } else {
                 isSend = false;
             }
@@ -136,29 +140,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     @Subscribe
     public void onTypeEvent(TypePhoneEvent event) {
-//        final View view = LayoutInflater.from(this).inflate(R.layout.alert_style, null);
-//        final AlertDialog alertDialog = new AlertDialog.Builder(this)
-//                .setView(view)
-//                .create();
-//        final EditText phoneET = (EditText) view.findViewById(R.id.phone);
-//        phoneET.setTextColor(getResources().getColor(android.R.color.white));
-//        phoneET.setText(UserProfileDto.User.getPhone());
-//        view.findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                EditText phoneET = (EditText) view.findViewById(R.id.phone);
-//                if (!TextUtils.isEmpty(phoneET.getText().toString())) {
-        TelephonyManager tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        String mPhoneNumber = tMgr.getLine1Number();
-        System.out.println(mPhoneNumber);
-        userProfileDto.setPhone(mPhoneNumber);
-        networkService.setDataToProfile(email, userProfileDto.getFirstName(),
-                userProfileDto.getLastName(), userProfileDto.getPhone());
-//                    alertDialog.dismiss();
-//    }
-//            }
-//        });
-//
-//        alertDialog.show();
+        try {
+            TelephonyManager tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            String mPhoneNumber = tMgr.getLine1Number();
+            System.out.println(mPhoneNumber);
+            userProfileDto.setPhone(mPhoneNumber);
+            networkService.setDataToProfile(email, userProfileDto.getFirstName(),
+                    userProfileDto.getLastName(), userProfileDto.getPhone());
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 }
