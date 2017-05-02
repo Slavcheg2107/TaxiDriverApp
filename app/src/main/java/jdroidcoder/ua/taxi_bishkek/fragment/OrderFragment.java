@@ -52,7 +52,8 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
     private View view;
-    private Snackbar snackbar;
+    private Snackbar snackbarForUpdate;
+    private Snackbar snackbarForConnection;
     private boolean isShowSnackbar = false;
 
     @Nullable
@@ -82,7 +83,9 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        snackbar = Snackbar.make(view, "For update list swipe down", Snackbar.LENGTH_INDEFINITE);
+        snackbarForUpdate = Snackbar.make(view, "For update list swipe down", Snackbar.LENGTH_INDEFINITE);
+
+        snackbarForConnection = Snackbar.make(view, "Connection error", Snackbar.LENGTH_INDEFINITE);
     }
 
     @Override
@@ -157,12 +160,12 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
         }
         if (orderAdapter.orderDtos.isEmpty()) {
             if (!isShowSnackbar) {
-                snackbar.show();
+                snackbarForUpdate.show();
                 isShowSnackbar = true;
             }
         } else {
             isShowSnackbar = false;
-            snackbar.dismiss();
+            snackbarForUpdate.dismiss();
         }
         orderAdapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
@@ -181,10 +184,9 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
     @Subscribe
     public void onConnectionErrorEvent(ConnectionErrorEvent connectionErrorEvent) {
         if(connectionErrorEvent.isShow()){
-            snackbar.setText("Connection error");
-            snackbar.show();
+            snackbarForConnection.show();
         }else {
-            snackbar.dismiss();
+            snackbarForConnection.dismiss();
         }
     }
 
