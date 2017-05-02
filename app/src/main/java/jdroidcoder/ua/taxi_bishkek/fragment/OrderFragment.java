@@ -180,9 +180,11 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
 
     @Subscribe
     public void onConnectionErrorEvent(ConnectionErrorEvent connectionErrorEvent) {
-        if(!snackbar.isShown()){
+        if(connectionErrorEvent.isShow()){
             snackbar.setText("Connection error");
             snackbar.show();
+        }else {
+            snackbar.dismiss();
         }
     }
 
