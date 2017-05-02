@@ -155,7 +155,7 @@ public class NetworkService {
                                 response.body().get(i).getPointACoordinate()[0],
                                 response.body().get(i).getPointACoordinate()[1]));
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
                 OrderDto.AcceptOreders.setItems(response.body());
@@ -178,7 +178,7 @@ public class NetworkService {
                 try {
                     EventBus.getDefault().post(new UpdateNotificationEvent());
                     OrderDto.AcceptOreders.add(response.body());
-                }catch (Exception e){
+                } catch (Exception e) {
                     EventBus.getDefault().post(new ErrorMessageEvent("Order is done"));
                 }
             }
@@ -214,8 +214,9 @@ public class NetworkService {
             @Override
             public void onResponse(Call<UserCoordinateDto> call, Response<UserCoordinateDto> response) {
                 try {
-                    EventBus.getDefault().post(new ShowMapEvent(response.body().getLat(), response.body().getLng()));
-                }catch (Exception e){
+                    EventBus.getDefault().post(new ShowMapEvent(null, null));
+//                    EventBus.getDefault().post(new ShowMapEvent(response.body().getLat(), response.body().getLng()));
+                } catch (Exception e) {
                     EventBus.getDefault().post(new ShowMapEvent());
                 }
             }
@@ -252,7 +253,7 @@ public class NetworkService {
                     OrderDto.AcceptOreders.getOrders().remove(response.body());
                     editBalance(10);
                     EventBus.getDefault().post(new UpdateNotificationEvent());
-                }catch (Exception e){
+                } catch (Exception e) {
                     EventBus.getDefault().post(new ErrorMessageEvent(e.getMessage()));
                 }
             }
@@ -298,6 +299,7 @@ public class NetworkService {
             }
         });
     }
+
     public void setCoordinate(Double lat, Double lng) {
         Call<Void> call = retrofitConfig.getApiNetwork().setCoordinate(UserProfileDto.User.getPhone(), lat, lng);
         call.enqueue(new Callback<Void>() {

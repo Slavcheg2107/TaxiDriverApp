@@ -34,7 +34,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        try {
             showMapEvent = (ShowMapEvent) getIntent().getSerializableExtra("userCoordinate");
 //        } catch (Exception e) {
-        if(showMapEvent == null) {
+        if(showMapEvent.getLat() == null) {
             Toast.makeText(this, "User not get coordinate", Toast.LENGTH_LONG).show();
         }
 //        }
@@ -53,7 +53,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        if (showMapEvent != null) {
+        if (showMapEvent.getLat() != null) {
             try {
                 LatLng sydney = new LatLng(showMapEvent.getLat(),
                         showMapEvent.getLng());
