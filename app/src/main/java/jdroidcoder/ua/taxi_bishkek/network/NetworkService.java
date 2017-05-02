@@ -191,7 +191,7 @@ public class NetworkService {
 
             @Override
             public void onFailure(Call<OrderDto> call, Throwable t) {
-                EventBus.getDefault().post(new ErrorMessageEvent(t.getMessage()));
+                EventBus.getDefault().post(new ConnectionErrorEvent(true));
             }
         });
     }
@@ -209,7 +209,7 @@ public class NetworkService {
 
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
-                EventBus.getDefault().post(new ErrorMessageEvent(t.getMessage()));
+                EventBus.getDefault().post(new ConnectionErrorEvent(true));
             }
         });
     }
@@ -220,8 +220,7 @@ public class NetworkService {
             @Override
             public void onResponse(Call<UserCoordinateDto> call, Response<UserCoordinateDto> response) {
                 try {
-                    EventBus.getDefault().post(new ShowMapEvent(null, null));
-//                    EventBus.getDefault().post(new ShowMapEvent(response.body().getLat(), response.body().getLng()));
+                    EventBus.getDefault().post(new ShowMapEvent(response.body().getLat(), response.body().getLng()));
                 } catch (Exception e) {
                     EventBus.getDefault().post(new ShowMapEvent());
                 }
@@ -229,8 +228,7 @@ public class NetworkService {
 
             @Override
             public void onFailure(Call<UserCoordinateDto> call, Throwable t) {
-                EventBus.getDefault().post(new ErrorMessageEvent("User not get coordinate"));
-                EventBus.getDefault().post(new ShowMapEvent());
+                EventBus.getDefault().post(new ConnectionErrorEvent(true));
             }
         });
     }
@@ -244,7 +242,7 @@ public class NetworkService {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                EventBus.getDefault().post(new ErrorMessageEvent(t.getMessage()));
+                EventBus.getDefault().post(new ConnectionErrorEvent(true));
             }
         });
     }
@@ -266,7 +264,7 @@ public class NetworkService {
 
             @Override
             public void onFailure(Call<OrderDto> call, Throwable t) {
-                EventBus.getDefault().post(new ErrorMessageEvent(t.getMessage()));
+                EventBus.getDefault().post(new ConnectionErrorEvent(true));
             }
         });
     }
@@ -286,7 +284,7 @@ public class NetworkService {
 
             @Override
             public void onFailure(Call<UserProfileDto> call, Throwable t) {
-                EventBus.getDefault().post(new ErrorMessageEvent(t.getMessage()));
+                EventBus.getDefault().post(new ConnectionErrorEvent(true));
             }
         });
     }
@@ -301,7 +299,7 @@ public class NetworkService {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                EventBus.getDefault().post(new ErrorMessageEvent(t.getMessage()));
+                EventBus.getDefault().post(new ConnectionErrorEvent(true));
             }
         });
     }
