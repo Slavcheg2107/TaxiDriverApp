@@ -15,12 +15,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
@@ -28,13 +26,12 @@ import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.ButterKnife;
 import jdroidcoder.ua.taxi_bishkek.R;
-import jdroidcoder.ua.taxi_bishkek.Utils.ImageFilePath;
+import jdroidcoder.ua.taxi_bishkek.utils.ImageFilePath;
 import jdroidcoder.ua.taxi_bishkek.adapters.ViewPagerAdapter;
 import jdroidcoder.ua.taxi_bishkek.events.ChangeListViewEvent;
 import jdroidcoder.ua.taxi_bishkek.events.ErrorMessageEvent;
 import jdroidcoder.ua.taxi_bishkek.fragment.OrderFragment;
 import jdroidcoder.ua.taxi_bishkek.model.UserProfileDto;
-import jdroidcoder.ua.taxi_bishkek.network.NetworkService;
 import jdroidcoder.ua.taxi_bishkek.service.LocationService;
 import jdroidcoder.ua.taxi_bishkek.service.UpdateOrdersService;
 
@@ -120,7 +117,8 @@ public class OrdersActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.uploadCheck) {
-            selectCheck();
+//            selectCheck();
+            startActivity(new Intent(this, PayActivity.class));
         } else if (item.getItemId() == R.id.replenishBalance) {
             final View view = LayoutInflater.from(this).inflate(R.layout.replenish_balance_alert, null);
             final AlertDialog alertDialog = new AlertDialog.Builder(this)

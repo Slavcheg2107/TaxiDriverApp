@@ -39,6 +39,10 @@
             android:name=".activity.MapsActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".activity.PayActivity"
+            android:screenOrientation="portrait" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDP2OjS_ORoDbj2E7Srd9LTdpmA_Bl-0K8" />

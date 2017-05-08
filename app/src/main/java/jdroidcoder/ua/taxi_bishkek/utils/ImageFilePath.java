@@ -1,4 +1,4 @@
-package jdroidcoder.ua.taxi_bishkek.Utils;
+package jdroidcoder.ua.taxi_bishkek.utils;
 
 import android.content.ContentUris;
 import android.content.Context;

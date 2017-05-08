@@ -15,4 +15,12 @@
     <string name="balance">Your balance:</string>
     <string name="uploadCheck">Upload check</string>
     <string name="how_replenish_balance">How to replenish the balance?</string>
+    <string name="lbl_amount">Amount:</string>
+    <string name="lbl_ccy">Currency:</string>
+    <string name="lbl_email">Email:</string>
+    <string name="lbl_description">Description:</string>
+    <string name="btn_pay">Pay</string>
+    <string name="e_invalid_amount">Invalid amount</string>
+    <string name="e_invalid_email">Invalid email</string>
+    <string name="e_invalid_description">Enter description</string>
 </resources>
