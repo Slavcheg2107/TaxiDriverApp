@@ -238,6 +238,7 @@ public class NetworkService {
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
+                getProfile(UserProfileDto.User.getEmail());
             }
 
             @Override
@@ -255,7 +256,7 @@ public class NetworkService {
                 try {
                     OrderDto.Oreders.add(response.body());
                     OrderDto.AcceptOreders.getOrders().remove(response.body());
-                    editBalance(10);
+                    editBalance(11);
                     EventBus.getDefault().post(new UpdateNotificationEvent());
                 } catch (Exception e) {
                     EventBus.getDefault().post(new ErrorMessageEvent(e.getMessage()));

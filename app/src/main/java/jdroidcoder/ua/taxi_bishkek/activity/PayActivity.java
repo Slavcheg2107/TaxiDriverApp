@@ -20,6 +20,7 @@ import com.cloudipsp.android.Receipt;
 
 import jdroidcoder.ua.taxi_bishkek.BuildConfig;
 import jdroidcoder.ua.taxi_bishkek.R;
+import jdroidcoder.ua.taxi_bishkek.network.NetworkService;
 
 /**
  * Created by jdroidcoder on 08.05.17.
@@ -53,7 +54,7 @@ public class PayActivity extends AppCompatActivity implements View.OnClickListen
         webView = (CloudipspWebView) findViewById(R.id.web_view);
         cloudipsp = new Cloudipsp(MERCHANT_ID, webView);
 
-        spinnerCcy.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Currency.values()));
+        spinnerCcy.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new Currency[]{Currency.RUB}));
     }
 
     @Override
@@ -116,9 +117,8 @@ public class PayActivity extends AppCompatActivity implements View.OnClickListen
                 cloudipsp.pay(card, order, new Cloudipsp.PayCallback() {
                     @Override
                     public void onPaidProcessed(Receipt receipt) {
-                        Toast.makeText(PayActivity.this, "Paid " + receipt.status.name() +
-                                "\nPaymentId:" + receipt.paymentId +
-                                "\n Signature:" + receipt.signature, Toast.LENGTH_LONG).show();
+                        new NetworkService().editBalance((int) (receipt.amount * 0.1) + receipt.amount);
+                        finish();
                     }
 
                     @Override

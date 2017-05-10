@@ -126,7 +126,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                     }
                     networkService.acceptOrder(orderDto.getId(), orderDto.getPointA(), orderDto.getPointB(),
                             orderDto.getUserPhone());
-                    networkService.editBalance(-10);
+                    networkService.editBalance(-11);
                     UserProfileDto.User.setBalance(UserProfileDto.User.getBalance() - 10);
                     OrderDto.Oreders.getOrders().remove(position);
                     getActivity().invalidateOptionsMenu();
