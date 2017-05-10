@@ -23,4 +23,5 @@
     <string name="e_invalid_amount">Invalid amount</string>
     <string name="e_invalid_email">Invalid email</string>
     <string name="e_invalid_description">Enter description</string>
+    <string name="online_pay">Online pay</string>
 </resources>

@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by jdroidcoder on 07.04.17.
  */
 public class RetrofitConfig {
-    private final static String BASE_URL = "http://192.168.1.101:4547/";
+    private final static String BASE_URL = "http://192.168.1.103:4547/";
 
     private HttpLoggingInterceptor logging = new HttpLoggingInterceptor()
             .setLevel(HttpLoggingInterceptor.Level.BODY);

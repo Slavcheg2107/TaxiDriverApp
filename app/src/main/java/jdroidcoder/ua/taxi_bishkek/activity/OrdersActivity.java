@@ -116,9 +116,11 @@ public class OrdersActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.uploadCheck) {
-//            selectCheck();
+        if (item.getItemId() == R.id.onlinePay) {
             startActivity(new Intent(this, PayActivity.class));
+        }
+        if (item.getItemId() == R.id.uploadCheck) {
+            selectCheck();
         } else if (item.getItemId() == R.id.replenishBalance) {
             final View view = LayoutInflater.from(this).inflate(R.layout.replenish_balance_alert, null);
             final AlertDialog alertDialog = new AlertDialog.Builder(this)

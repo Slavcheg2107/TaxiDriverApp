@@ -53,7 +53,7 @@ public class PayActivity extends AppCompatActivity implements View.OnClickListen
         webView = (CloudipspWebView) findViewById(R.id.web_view);
         cloudipsp = new Cloudipsp(MERCHANT_ID, webView);
 
-        spinnerCcy.setAdapter(new ArrayAdapter<Currency>(this, android.R.layout.simple_spinner_item, Currency.values()));
+        spinnerCcy.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Currency.values()));
     }
 
     @Override
@@ -112,8 +112,6 @@ public class PayActivity extends AppCompatActivity implements View.OnClickListen
             if (card != null) {
                 final Currency currency = (Currency) spinnerCcy.getSelectedItem();
                 final Order order = new Order(amount, currency, "vb_" + System.currentTimeMillis(), description, email);
-//                order.setRecToken("IZug5oCNnPwohDvJfscAt2KsEUF7s9V4");
-//                order.setReservationData("eyJwaG9uZW1vYmlsZSI6IjE1MDI3MTIzMTEiLCJjdXN0b21lcl9hZGRyZXNzIjoiM3JkIFN0cmVldCIsImN1c3RvbWVyX2NvdW50cnkiOiJDQSIsImN1c3RvbWVyX3N0YXRlIjoiT04iLCJjdXN0b21lcl9uYW1lIjoiWXZvbm5lIFRoaWJhdWx0IiwiY3VzdG9tZXJfY2l0eSI6IkFsYmVydGEiLCJjdXN0b21lcl96aXAiOiI0MiJ9");
 
                 cloudipsp.pay(card, order, new Cloudipsp.PayCallback() {
                     @Override
