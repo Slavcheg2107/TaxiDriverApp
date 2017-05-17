@@ -75,9 +75,9 @@ public class LocationService extends Service implements LocationListener {
                 intentOrdersActivity, 0);
         notification = new Notification.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Orders")
+                .setContentTitle("Заказы поблизости")
                 .setContentIntent(pendingIntent)
-                .setContentText("Available orders: " + count)
+                .setContentText("Доступных заказов: " + count)
                 .build();
         startForeground(106, notification);
     }

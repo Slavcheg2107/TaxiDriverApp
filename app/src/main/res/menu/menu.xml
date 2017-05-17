@@ -18,7 +18,7 @@
     <item
         android:id="@+id/replenishBalance"
         android:title="@string/how_replenish_balance" />
-    <item
-        android:id="@+id/uploadCheck"
-        android:title="@string/uploadCheck" />
+    <!--<item-->
+        <!--android:id="@+id/uploadCheck"-->
+        <!--android:title="@string/uploadCheck" />-->
 </menu>

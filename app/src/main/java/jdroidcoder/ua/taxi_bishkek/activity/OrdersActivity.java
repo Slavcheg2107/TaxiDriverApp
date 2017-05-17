@@ -77,8 +77,8 @@ public class OrdersActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new OrderFragment(), "Orders");
-        adapter.addFragment(new OrderFragment(), "Accept orders");
+        adapter.addFragment(new OrderFragment(), "Доступные заказы");
+        adapter.addFragment(new OrderFragment(), "Принятые заказы");
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -123,9 +123,10 @@ public class OrdersActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.onlinePay) {
             startActivity(new Intent(this, PayActivity.class));
         }
-        if (item.getItemId() == R.id.uploadCheck) {
-            selectCheck();
-        } else if (item.getItemId() == R.id.replenishBalance) {
+//        if (item.getItemId() == R.id.uploadCheck) {
+//            selectCheck();
+//        } else
+            if (item.getItemId() == R.id.replenishBalance) {
             final View view = LayoutInflater.from(this).inflate(R.layout.replenish_balance_alert, null);
             final AlertDialog alertDialog = new AlertDialog.Builder(this)
                     .setTitle(getResources().getString(R.string.how_replenish_balance))

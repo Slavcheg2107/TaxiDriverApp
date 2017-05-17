@@ -83,9 +83,9 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        snackbarForUpdate = Snackbar.make(view, "For update list swipe down", Snackbar.LENGTH_INDEFINITE);
+        snackbarForUpdate = Snackbar.make(view, "Для обновления списка потяни вниз", Snackbar.LENGTH_INDEFINITE);
 
-        snackbarForConnection = Snackbar.make(view, "Connection error", Snackbar.LENGTH_INDEFINITE);
+        snackbarForConnection = Snackbar.make(view, "Подключи интернет", Snackbar.LENGTH_INDEFINITE);
     }
 
     @Override
@@ -116,12 +116,12 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
             if (OrderDto.AcceptOreders.getOrders().size() < 4) {
                 try {
                     if (checkBalance()) {
-                        EventBus.getDefault().post(new ErrorMessageEvent("U are have small balance"));
+                        EventBus.getDefault().post(new ErrorMessageEvent("Пополни баланс"));
                         return;
                     }
                     orderDto = OrderDto.Oreders.getOrders().get(position);
                     if (orderDto.getUserPhone().equals(UserProfileDto.User.getPhone())) {
-                        EventBus.getDefault().post(new ErrorMessageEvent("This is you Order"));
+                        EventBus.getDefault().post(new ErrorMessageEvent("Ты пытаешься взять заказ сам у себя"));
                         return;
                     }
                     networkService.acceptOrder(orderDto.getId(), orderDto.getPointA(), orderDto.getPointB(),
@@ -135,7 +135,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                     EventBus.getDefault().post(new ErrorMessageEvent(e.getMessage()));
                 }
             } else {
-                EventBus.getDefault().post(new ErrorMessageEvent("U are have full orders"));
+                EventBus.getDefault().post(new ErrorMessageEvent("Ты итак взял уже 4 заказа"));
             }
         } else {
             try {

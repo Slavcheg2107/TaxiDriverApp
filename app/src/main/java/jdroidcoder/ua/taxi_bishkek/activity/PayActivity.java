@@ -20,6 +20,7 @@ import com.cloudipsp.android.Receipt;
 
 import jdroidcoder.ua.taxi_bishkek.BuildConfig;
 import jdroidcoder.ua.taxi_bishkek.R;
+import jdroidcoder.ua.taxi_bishkek.model.UserProfileDto;
 import jdroidcoder.ua.taxi_bishkek.network.NetworkService;
 
 /**
@@ -30,8 +31,8 @@ public class PayActivity extends AppCompatActivity implements View.OnClickListen
 
     private EditText editAmount;
     private Spinner spinnerCcy;
-    private EditText editEmail;
-    private EditText editDescription;
+//    private EditText editEmail;
+//    private EditText editDescription;
     private CardInputView cardInput;
     private CloudipspWebView webView;
 
@@ -45,8 +46,8 @@ public class PayActivity extends AppCompatActivity implements View.OnClickListen
         findViewById(R.id.btn_amount).setOnClickListener(this);
         editAmount = (EditText) findViewById(R.id.edit_amount);
         spinnerCcy = (Spinner) findViewById(R.id.spinner_ccy);
-        editEmail = (EditText) findViewById(R.id.edit_email);
-        editDescription = (EditText) findViewById(R.id.edit_description);
+//        editEmail = (EditText) findViewById(R.id.edit_email);
+//        editDescription = (EditText) findViewById(R.id.edit_description);
         cardInput = (CardInputView) findViewById(R.id.card_input);
         cardInput.setHelpedNeeded(BuildConfig.DEBUG);
         findViewById(R.id.btn_pay).setOnClickListener(this);
@@ -66,7 +67,7 @@ public class PayActivity extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_amount:
-                fillTest();
+//                fillTest();
                 break;
             case R.id.btn_pay:
                 processPay();
@@ -74,16 +75,8 @@ public class PayActivity extends AppCompatActivity implements View.OnClickListen
         }
     }
 
-    private void fillTest() {
-        editAmount.setText("1");
-        editEmail.setText("test@test.com");
-        editDescription.setText("test payment");
-    }
-
     private void processPay() {
         editAmount.setError(null);
-        editEmail.setError(null);
-        editDescription.setError(null);
 
         final int amount;
         try {
@@ -93,13 +86,13 @@ public class PayActivity extends AppCompatActivity implements View.OnClickListen
             return;
         }
 
-        final String email = editEmail.getText().toString();
-        final String description = editDescription.getText().toString();
-        if (TextUtils.isEmpty(email) || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            editEmail.setError(getString(R.string.e_invalid_email));
-        } else if (TextUtils.isEmpty(description)) {
-            editDescription.setError(getString(R.string.e_invalid_description));
-        } else {
+        final String email = UserProfileDto.User.getEmail();
+        final String description = "Баланс";
+//        if (TextUtils.isEmpty(email) || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+//            editEmail.setError(getString(R.string.e_invalid_email));
+//        } else if (TextUtils.isEmpty(description)) {
+//            editDescription.setError(getString(R.string.e_invalid_description));
+//        } else {
             final Card card = cardInput.confirm(new CardInputView.ConfirmationErrorHandler() {
                 @Override
                 public void onCardInputErrorClear(CardInputView view, EditText editText) {
@@ -141,7 +134,7 @@ public class PayActivity extends AppCompatActivity implements View.OnClickListen
                     }
                 });
             }
-        }
+//        }
     }
 
     @Override

@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:text="1 - Найдите терминал QIWI"
+        android:text="Найди синий терминал QIWI"
         android:textColor="#373737"
         android:textSize="16sp" />
 
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:text="2 - Нажмите на «Коммерческий банк КЫРГЫЗСТАН»"
+        android:text="Зайди в раздел: Другие услуги"
         android:textColor="#373737"
         android:textSize="16sp" />
 
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:text="3 - Пополните счёт 1111111111 на нужную сумму"
+        android:text="Нажми кнопку: Попутное такси"
         android:textColor="#373737"
         android:textSize="16sp" />
 
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:text="4 - Сфотографируйте полученную квитанцию"
+        android:text="Введи номер +996555444777"
         android:textColor="#373737"
         android:textSize="16sp" />
 
@@ -45,7 +45,16 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:text="5 - Отправьте квитанцию на проверку нажав кнопку Upload check"
+        android:text="Загрузи в терминал любую сумму"
+        android:textColor="#373737"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Потяни список вниз через 5 минут"
         android:textColor="#373737"
         android:textSize="16sp" />
 

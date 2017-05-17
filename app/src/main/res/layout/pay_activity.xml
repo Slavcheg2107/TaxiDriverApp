@@ -38,30 +38,30 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:text="@string/lbl_email" />
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="7dp"-->
+                <!--android:text="@string/lbl_email" />-->
 
-            <EditText
-                android:id="@+id/edit_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:inputType="textEmailAddress" />
+            <!--<EditText-->
+                <!--android:id="@+id/edit_email"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="7dp"-->
+                <!--android:inputType="textEmailAddress" />-->
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:text="@string/lbl_description" />
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="7dp"-->
+                <!--android:text="@string/lbl_description" />-->
 
-            <EditText
-                android:id="@+id/edit_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp" />
+            <!--<EditText-->
+                <!--android:id="@+id/edit_description"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="7dp" />-->
 
             <com.cloudipsp.android.CardInputView
                 android:id="@+id/card_input"
