@@ -61,8 +61,12 @@ public class OrdersActivity extends AppCompatActivity {
                     123);
         }
         startService(new Intent(this, LocationService.class));
-        myLocation = ((LocationManager) getSystemService(LOCATION_SERVICE)).
-                getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        try {
+            myLocation = ((LocationManager) getSystemService(LOCATION_SERVICE)).
+                    getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        }catch (Exception e){
+
+        }
         startService(new Intent(this, UpdateOrdersService.class));
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);

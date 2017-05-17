@@ -43,9 +43,17 @@ public class LocationService extends Service implements LocationListener {
                         != PackageManager.PERMISSION_GRANTED) {
             super.onStartCommand(intent, flags, startId);
         }
-        ((LocationManager) getSystemService(LOCATION_SERVICE))
-                .requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-        EventBus.getDefault().register(this);
+        try {
+            ((LocationManager) getSystemService(LOCATION_SERVICE))
+                    .requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        }catch (Exception e){
+
+        }
+        try {
+            EventBus.getDefault().register(this);
+        }catch (Exception e){
+
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -77,7 +85,11 @@ public class LocationService extends Service implements LocationListener {
     @Override
     public void onDestroy() {
         stopForeground(true);
-        EventBus.getDefault().unregister(this);
+        try {
+            EventBus.getDefault().unregister(this);
+        }catch (Exception e){
+
+        }
         super.onDestroy();
     }
 
