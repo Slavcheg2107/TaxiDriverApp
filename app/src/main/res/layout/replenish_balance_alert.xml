@@ -13,32 +13,103 @@
         android:textColor="#373737"
         android:textSize="16sp" />
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:text="Зайди в раздел: Другие услуги"
-        android:textColor="#373737"
-        android:textSize="16sp" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:text="Найдите раздел: Услуги такси"
-        android:textColor="#373737"
-        android:textSize="16sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="Зайди в раздел: Другие услуги"
+            android:textColor="#373737"
+            android:textSize="16sp" />
 
-    <TextView
+        <ImageView
+            android:layout_width="175dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:src="@drawable/arrows" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:text="Нажми кнопку: Попутное такси"
-        android:textColor="#373737"
-        android:textSize="16sp" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="Найдите раздел: Услуги такси"
+            android:textColor="#373737"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="175dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:src="@drawable/car" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="Перейдите на последнюю страницу"
+            android:textColor="#373737"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:src="@drawable/numbers" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:text="Нажми кнопку: Попутное такси"
+            android:textColor="#373737"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="175dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:src="@drawable/logo" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/user_phone"
@@ -69,40 +140,40 @@
         android:textSize="16sp" />
 
     <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="10dp"-->
+    <!--android:layout_marginTop="20dp"-->
+    <!--android:text="* - Пополнение баланса нужно осуществлять с 14.00 до 03.00"-->
+    <!--android:textColor="#373737" />-->
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="10dp"-->
-        <!--android:layout_marginTop="20dp"-->
-        <!--android:text="* - Пополнение баланса нужно осуществлять с 14.00 до 03.00"-->
-        <!--android:textColor="#373737" />-->
+        <!--android:layout_gravity="right|bottom"-->
+        <!--android:orientation="vertical">-->
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom"
-        android:orientation="vertical">
+        <!--<TextView-->
+            <!--android:id="@+id/ok_button"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="right|bottom"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:background="#595959"-->
+            <!--android:gravity="center"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:paddingLeft="30dp"-->
+            <!--android:paddingRight="30dp"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:text="OK"-->
+            <!--android:textColor="#ffffff"-->
+            <!--android:textSize="20sp" />-->
 
-        <TextView
-            android:id="@+id/ok_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|bottom"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="#595959"
-            android:paddingTop="10dp"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:text="OK"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/line" />
-    </LinearLayout>
+        <!--<ImageView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="5dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:src="@drawable/line" />-->
+    <!--</LinearLayout>-->
 </LinearLayout>

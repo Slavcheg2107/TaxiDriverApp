@@ -143,19 +143,20 @@ public class OrdersActivity extends AppCompatActivity {
 
             alertDialog.show();
         } else if (item.getItemId() == R.id.replenishBalance) {
-            final View view = LayoutInflater.from(this).inflate(R.layout.replenish_balance_alert, null);
-            final AlertDialog alertDialog = new AlertDialog.Builder(this)
-                    .setView(view).create();
-            TextView userPhone = (TextView) view.findViewById(R.id.user_phone);
-            userPhone.setText(userPhone.getText() + UserProfileDto.User.getPhone());
-            view.findViewById(R.id.ok_button).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    alertDialog.dismiss();
-                }
-            });
-
-            alertDialog.show();
+//            final View view = LayoutInflater.from(this).inflate(R.layout.replenish_balance_alert, null);
+//            final AlertDialog alertDialog = new AlertDialog.Builder(this)
+//                    .setView(view).create();
+//            TextView userPhone = (TextView) view.findViewById(R.id.user_phone);
+//            userPhone.setText(userPhone.getText() + UserProfileDto.User.getPhone());
+//            view.findViewById(R.id.ok_button).setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    alertDialog.dismiss();
+//                }
+//            });
+//
+//            alertDialog.show();
+            startActivity(new Intent(this, PayActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

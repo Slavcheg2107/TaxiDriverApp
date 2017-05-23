@@ -83,7 +83,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        snackbarForUpdate = Snackbar.make(view, "Для обновления списка потяни вниз", Snackbar.LENGTH_INDEFINITE);
+        snackbarForUpdate = Snackbar.make(view, "Для обновления списка потяните вниз", Snackbar.LENGTH_INDEFINITE);
 
         snackbarForConnection = Snackbar.make(view, "Подключи интернет", Snackbar.LENGTH_INDEFINITE);
     }
