@@ -56,8 +56,8 @@ public class OrderAdapter extends BaseAdapter {
         convertView = LayoutInflater.from(context).inflate(R.layout.order_list_style, parent, false);
         final OrderDto orderDto = orderDtos.get(position);
         try {
-            ((TextView) convertView.findViewById(R.id.addressTV)).setText(orderDto.getPoints());
-            ((TextView) convertView.findViewById(R.id.whenTV)).setText(orderDto.getTime());
+            ((TextView) convertView.findViewById(R.id.addressTV)).setText("от " + orderDto.getPoints());
+            ((TextView) convertView.findViewById(R.id.whenTV)).setText("до " + orderDto.getTime());
             if (OrdersActivity.myLocation == null) {
                 (convertView.findViewById(R.id.distanceTV)).setVisibility(View.GONE);
             }
