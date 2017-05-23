@@ -11,9 +11,12 @@
     <!--android:id="@+id/changeNumber"-->
     <!--android:title="@string/changeNumber" />-->
 
+    <!--<item-->
+        <!--android:id="@+id/onlinePay"-->
+        <!--android:title="@string/online_pay" />-->
     <item
-        android:id="@+id/onlinePay"
-        android:title="@string/online_pay" />
+        android:id="@+id/rules"
+        android:title="ТАРИФЫ" />
 
     <item
         android:id="@+id/replenishBalance"

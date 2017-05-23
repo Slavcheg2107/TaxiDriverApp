@@ -14,7 +14,7 @@
     <string name="changeNumber">Change number</string>
     <string name="balance">Твой баланс:</string>
     <string name="uploadCheck">Upload check</string>
-    <string name="how_replenish_balance">Пополнить через терминал</string>
+    <string name="how_replenish_balance">ПОПОЛНИТЬ</string>
     <string name="lbl_amount">Сумма:</string>
     <string name="lbl_ccy">Валюта:</string>
     <string name="lbl_email">Емейл:</string>

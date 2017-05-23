@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:text="Найди синий терминал QIWI"
+        android:text="Найдите оранжевый терминал Мобильник."
         android:textColor="#373737"
         android:textSize="16sp" />
 
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:text="Нажми кнопку: Попутное такси"
+        android:text="Найдите раздел: Услуги такси"
         android:textColor="#373737"
         android:textSize="16sp" />
 
@@ -36,7 +36,17 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:text="Введи номер +996555444777"
+        android:text="Нажми кнопку: Попутное такси"
+        android:textColor="#373737"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/user_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Введите номер вашего телефона: "
         android:textColor="#373737"
         android:textSize="16sp" />
 
@@ -58,13 +68,13 @@
         android:textColor="#373737"
         android:textSize="16sp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:text="* - Пополнение баланса нужно осуществлять с 14.00 до 03.00"
-        android:textColor="#373737" />
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:text="* - Пополнение баланса нужно осуществлять с 14.00 до 03.00"-->
+        <!--android:textColor="#373737" />-->
 
     <LinearLayout
         android:layout_width="wrap_content"

@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
@@ -64,7 +65,7 @@ public class OrdersActivity extends AppCompatActivity {
         try {
             myLocation = ((LocationManager) getSystemService(LOCATION_SERVICE)).
                     getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         startService(new Intent(this, UpdateOrdersService.class));
@@ -120,17 +121,33 @@ public class OrdersActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.onlinePay) {
-            startActivity(new Intent(this, PayActivity.class));
-        }
+//        if (item.getItemId() == R.id.onlinePay) {
+//            startActivity(new Intent(this, PayActivity.class));
+//        }
 //        if (item.getItemId() == R.id.uploadCheck) {
 //            selectCheck();
 //        } else
-            if (item.getItemId() == R.id.replenishBalance) {
+
+        if (item.getItemId() == R.id.rules) {
             final View view = LayoutInflater.from(this).inflate(R.layout.replenish_balance_alert, null);
             final AlertDialog alertDialog = new AlertDialog.Builder(this)
-                    .setTitle(getResources().getString(R.string.how_replenish_balance))
                     .setView(view).create();
+            TextView userPhone = (TextView) view.findViewById(R.id.user_phone);
+            userPhone.setText(userPhone.getText() + UserProfileDto.User.getPhone());
+            view.findViewById(R.id.ok_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.dismiss();
+                }
+            });
+
+            alertDialog.show();
+        } else if (item.getItemId() == R.id.replenishBalance) {
+            final View view = LayoutInflater.from(this).inflate(R.layout.replenish_balance_alert, null);
+            final AlertDialog alertDialog = new AlertDialog.Builder(this)
+                    .setView(view).create();
+            TextView userPhone = (TextView) view.findViewById(R.id.user_phone);
+            userPhone.setText(userPhone.getText() + UserProfileDto.User.getPhone());
             view.findViewById(R.id.ok_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
