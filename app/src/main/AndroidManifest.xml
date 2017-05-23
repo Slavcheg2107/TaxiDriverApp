@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
@@ -18,9 +18,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".activity.LoginActivity"
-            android:screenOrientation="portrait"
+        <activity android:name=".activity.LoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,23 +30,18 @@
         <service android:name=".service.LocationService" />
         <service android:name=".service.UpdateOrdersService" />
 
-        <activity
-            android:name=".activity.OrdersActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.MapsActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".activity.PayActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".activity.OrdersActivity" />
+        <activity android:name=".activity.MapsActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDP2OjS_ORoDbj2E7Srd9LTdpmA_Bl-0K8" />
+            android:value="AIzaSyDUwhlpulPNHCtw2iYVHQnF6tLd3k-Egsw" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+        <activity
+            android:name=".activity.PayActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 
