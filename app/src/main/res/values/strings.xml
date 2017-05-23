@@ -24,4 +24,7 @@
     <string name="e_invalid_email">Invalid email</string>
     <string name="e_invalid_description">Enter description</string>
     <string name="online_pay">Пополнить карточкой Visa</string>
+    <string name="app_label">Нажмите кнопку: \"Попутное такси\"</string>
+    <string name="service">Найдите раздел: \"Услуги такси\"</string>
+    <string name="move_to_other_service">Зайдите в раздел: \"Другие услуги\"</string>
 </resources>
