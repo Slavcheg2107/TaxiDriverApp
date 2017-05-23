@@ -9,42 +9,34 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:text="Eсли везешь одновременно:
-\t3 - пассажира, тогда 50 сом с каждого
-\t2 - пассажира, тогда 65 сом с каждого, 1-го пассажира, тогда 100 сом(без доплат))  и для пассажира (если кроме тебя в машине ещё
-\t2 - человека, плати 50 сом
-\t1 - человек, плати 65 сом
-Едешь один, плати 100 сом(без доплат))"
+        android:text="Если везёте одновременно:"
         android:textColor="#373737"
         android:textSize="16sp" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom"
-        android:orientation="vertical">
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="3 пассажира, тогда по 50 сом с каждого."
+        android:textColor="#373737"
+        android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/ok_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|bottom"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="#595959"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:paddingTop="10dp"
-            android:text="OK"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="2 пассажира, тогда по 65 сом с каждого."
+        android:textColor="#373737"
+        android:textSize="16sp" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/line" />
-    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="1 - го, тогда 100 сом(единый тариф без доплат)."
+        android:textColor="#373737"
+        android:textSize="16sp" />
 </LinearLayout>

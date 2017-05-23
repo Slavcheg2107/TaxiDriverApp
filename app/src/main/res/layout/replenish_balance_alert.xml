@@ -126,7 +126,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:text="Загрузи в терминал любую сумму"
+        android:text="Загрузите в терминал любую сумму"
         android:textColor="#373737"
         android:textSize="16sp" />
 
@@ -135,7 +135,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:text="Потяни список вниз через 5 минут"
+        android:text="Потяните список вниз через 5 минут"
         android:textColor="#373737"
         android:textSize="16sp" />
 

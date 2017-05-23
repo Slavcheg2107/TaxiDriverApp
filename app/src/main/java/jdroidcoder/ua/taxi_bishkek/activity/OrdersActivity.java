@@ -129,19 +129,20 @@ public class OrdersActivity extends AppCompatActivity {
 //        } else
 
         if (item.getItemId() == R.id.rules) {
-            final View view = LayoutInflater.from(this).inflate(R.layout.rules_alert, null);
-            final AlertDialog alertDialog = new AlertDialog.Builder(this)
-                    .setView(view).create();
-//            TextView userPhone = (TextView) view.findViewById(R.id.user_phone);
-//            userPhone.setText(userPhone.getText() + UserProfileDto.User.getPhone());
-            view.findViewById(R.id.ok_button).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    alertDialog.dismiss();
-                }
-            });
-
-            alertDialog.show();
+//            final View view = LayoutInflater.from(this).inflate(R.layout.rules_alert, null);
+//            final AlertDialog alertDialog = new AlertDialog.Builder(this)
+//                    .setView(view).create();
+////            TextView userPhone = (TextView) view.findViewById(R.id.user_phone);
+////            userPhone.setText(userPhone.getText() + UserProfileDto.User.getPhone());
+//            view.findViewById(R.id.ok_button).setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    alertDialog.dismiss();
+//                }
+//            });
+//
+//            alertDialog.show();
+            startActivity(new Intent(this, PayActivity.class).putExtra("isRusels",true));
         } else if (item.getItemId() == R.id.replenishBalance) {
 //            final View view = LayoutInflater.from(this).inflate(R.layout.replenish_balance_alert, null);
 //            final AlertDialog alertDialog = new AlertDialog.Builder(this)
@@ -156,7 +157,7 @@ public class OrdersActivity extends AppCompatActivity {
 //            });
 //
 //            alertDialog.show();
-            startActivity(new Intent(this, PayActivity.class));
+            startActivity(new Intent(this, PayActivity.class).putExtra("isRusels",false));
         }
         return super.onOptionsItemSelected(item);
     }

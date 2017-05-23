@@ -29,24 +29,28 @@ import jdroidcoder.ua.taxi_bishkek.network.NetworkService;
  */
 public class PayActivity extends AppCompatActivity{
 //        implements View.OnClickListener {
-    private static final int MERCHANT_ID = 1396424;
+//    private static final int MERCHANT_ID = 1396424;
 
-    private EditText editAmount;
-    private Spinner spinnerCcy;
+//    private EditText editAmount;
+//    private Spinner spinnerCcy;
 //    private EditText editEmail;
 //    private EditText editDescription;
-    private CardInputView cardInput;
-    private CloudipspWebView webView;
+//    private CardInputView cardInput;
+//    private CloudipspWebView webView;
 
-    private Cloudipsp cloudipsp;
+//    private Cloudipsp cloudipsp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.replenish_balance_alert);
+        if(!getIntent().getBooleanExtra("isRusels",false)) {
+            setContentView(R.layout.replenish_balance_alert);
 
-        TextView userPhone = (TextView) findViewById(R.id.user_phone);
-        userPhone.setText(userPhone.getText() + UserProfileDto.User.getPhone());
+            TextView userPhone = (TextView) findViewById(R.id.user_phone);
+            userPhone.setText(userPhone.getText() + UserProfileDto.User.getPhone());
+        }else {
+            setContentView(R.layout.rules_alert);
+        }
 //        findViewById(R.id.btn_amount).setOnClickListener(this);
 //        editAmount = (EditText) findViewById(R.id.edit_amount);
 //        spinnerCcy = (Spinner) findViewById(R.id.spinner_ccy);
