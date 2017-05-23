@@ -86,7 +86,7 @@ public class OrderDto {
     }
 
     public String getPoints() {
-        return "от " + getPointA() + "\n\n до " + getPointB() + "\n";
+        return "от " + getPointA() + "\n\nдо " + getPointB() + "\n";
     }
 
     public double[] getPointACoordinate() {
