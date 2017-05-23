@@ -129,11 +129,11 @@ public class OrdersActivity extends AppCompatActivity {
 //        } else
 
         if (item.getItemId() == R.id.rules) {
-            final View view = LayoutInflater.from(this).inflate(R.layout.replenish_balance_alert, null);
+            final View view = LayoutInflater.from(this).inflate(R.layout.rules_alert, null);
             final AlertDialog alertDialog = new AlertDialog.Builder(this)
                     .setView(view).create();
-            TextView userPhone = (TextView) view.findViewById(R.id.user_phone);
-            userPhone.setText(userPhone.getText() + UserProfileDto.User.getPhone());
+//            TextView userPhone = (TextView) view.findViewById(R.id.user_phone);
+//            userPhone.setText(userPhone.getText() + UserProfileDto.User.getPhone());
             view.findViewById(R.id.ok_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

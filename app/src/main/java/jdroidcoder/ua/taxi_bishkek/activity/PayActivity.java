@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cloudipsp.android.Card;
@@ -44,6 +45,8 @@ public class PayActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.replenish_balance_alert);
 
+        TextView userPhone = (TextView) findViewById(R.id.user_phone);
+        userPhone.setText(userPhone.getText() + UserProfileDto.User.getPhone());
 //        findViewById(R.id.btn_amount).setOnClickListener(this);
 //        editAmount = (EditText) findViewById(R.id.edit_amount);
 //        spinnerCcy = (Spinner) findViewById(R.id.spinner_ccy);
