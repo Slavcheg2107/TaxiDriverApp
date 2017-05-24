@@ -1,33 +1,35 @@
 {
   "project_info": {
-    "project_number": "369417043069",
-    "project_id": "firebase-bishkek-taxi-driver-a"
+    "project_number": "5966423756",
+    "firebase_url": "https://taxi-bishkek-driver-ba6b8.firebaseio.com",
+    "project_id": "taxi-bishkek-driver-ba6b8",
+    "storage_bucket": "taxi-bishkek-driver-ba6b8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:369417043069:android:c14c309b6ec0034d",
+        "mobilesdk_app_id": "1:5966423756:android:ad7c09f7b3b321f5",
         "android_client_info": {
-          "package_name": "jdroidcoder.ua.taxi_bishkek"
+          "package_name": "jdroidcoder.ua.taxi_bishkek_driver"
         }
       },
       "oauth_client": [
         {
-          "client_id": "369417043069-8lhdpupjvspgp5raa2n5b79f4lob958u.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "369417043069-cm5ggge6bnfnl6fhe57b0a8i87k3f72v.apps.googleusercontent.com",
+          "client_id": "5966423756-shcff0bs5a6sr47k6qqge0t5g6tnm5as.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "jdroidcoder.ua.taxi_bishkek",
-            "certificate_hash": "be9d5276b01188d331bb0fa70932bf09e60c5a5f"
+            "package_name": "jdroidcoder.ua.taxi_bishkek_driver",
+            "certificate_hash": "a3b2f554cfa27b856f71d24c51a2c153a56432d1"
           }
+        },
+        {
+          "client_id": "5966423756-8p3en7asgdjpuuvh23choo3eblqjhibq.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDbHmQ_kwJVkgrrypchHx-IajkIyXWiHcc"
+          "current_key": "AIzaSyAzK4Z3-p1U-wa9KdxCtERS9ikUDduw9P0"
         }
       ],
       "services": {
@@ -35,11 +37,16 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "5966423756-8p3en7asgdjpuuvh23choo3eblqjhibq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }
