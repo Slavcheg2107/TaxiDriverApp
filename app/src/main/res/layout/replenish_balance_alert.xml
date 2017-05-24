@@ -153,7 +153,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:text="Берите с человека по 50 сом и зарабатывайте 500 сом в час."
+        android:text="Берите с каждого 50 сом."
         android:textColor="#373737"
         android:textSize="16sp" />
 

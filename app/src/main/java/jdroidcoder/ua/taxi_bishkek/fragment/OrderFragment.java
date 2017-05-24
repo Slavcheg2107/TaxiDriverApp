@@ -116,12 +116,12 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
             if (OrderDto.AcceptOreders.getOrders().size() < 4) {
                 try {
                     if (checkBalance()) {
-                        EventBus.getDefault().post(new ErrorMessageEvent("Пополни баланс"));
+                        EventBus.getDefault().post(new ErrorMessageEvent("Пополните баланс"));
                         return;
                     }
                     orderDto = OrderDto.Oreders.getOrders().get(position);
                     if (orderDto.getUserPhone().equals(UserProfileDto.User.getPhone())) {
-                        EventBus.getDefault().post(new ErrorMessageEvent("Ты пытаешься взять заказ сам у себя"));
+                        EventBus.getDefault().post(new ErrorMessageEvent("Вы пытаетесь взять заказ у самого себя"));
                         return;
                     }
                     networkService.acceptOrder(orderDto.getId(), orderDto.getPointA(), orderDto.getPointB(),
@@ -135,7 +135,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                     EventBus.getDefault().post(new ErrorMessageEvent(e.getMessage()));
                 }
             } else {
-                EventBus.getDefault().post(new ErrorMessageEvent("Ты итак взял уже 4 заказа"));
+                EventBus.getDefault().post(new ErrorMessageEvent("Сначала удалите какой-нибуть заказ"));
             }
         } else {
             try {
