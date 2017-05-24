@@ -140,6 +140,23 @@
         android:textColor="#373737"
         android:textSize="16sp" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Развозите одновременно сколько угодно людей."
+        android:textColor="#373737"
+        android:textSize="16sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="РБерите с человека по 50 сом и зарабатывайте 500 сом в час."
+        android:textColor="#373737"
+        android:textSize="16sp" />
+
     <!--<TextView-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="wrap_content"-->

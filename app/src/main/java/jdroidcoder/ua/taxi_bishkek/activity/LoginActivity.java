@@ -149,6 +149,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     @Subscribe
     public void onConnectionErrorEvent(ConnectionErrorEvent connectionErrorEvent) {
-        Snackbar.make(findViewById(R.id.sign_in_button), "Connection error", Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(findViewById(R.id.sign_in_button), "Подключите интернет", Snackbar.LENGTH_INDEFINITE).show();
     }
 }
