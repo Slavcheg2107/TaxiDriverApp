@@ -14,13 +14,14 @@
     <!--<item-->
         <!--android:id="@+id/onlinePay"-->
         <!--android:title="@string/online_pay" />-->
-    <item
-        android:id="@+id/rules"
-        android:title="ТАРИФЫ" />
+    <!--<item-->
+        <!--android:id="@+id/rules"-->
+        <!--android:title="ТАРИФЫ" />-->
 
     <item
         android:id="@+id/replenishBalance"
-        android:title="@string/how_replenish_balance" />
+        android:title="@string/how_replenish_balance"
+        app:showAsAction="always"/>
     <!--<item-->
         <!--android:id="@+id/uploadCheck"-->
         <!--android:title="@string/uploadCheck" />-->

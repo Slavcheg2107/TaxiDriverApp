@@ -128,7 +128,7 @@ public class OrdersActivity extends AppCompatActivity {
 //            selectCheck();
 //        } else
 
-        if (item.getItemId() == R.id.rules) {
+//        if (item.getItemId() == R.id.rules) {
 //            final View view = LayoutInflater.from(this).inflate(R.layout.rules_alert, null);
 //            final AlertDialog alertDialog = new AlertDialog.Builder(this)
 //                    .setView(view).create();
@@ -142,8 +142,9 @@ public class OrdersActivity extends AppCompatActivity {
 //            });
 //
 //            alertDialog.show();
-            startActivity(new Intent(this, PayActivity.class).putExtra("isRusels",true));
-        } else if (item.getItemId() == R.id.replenishBalance) {
+//            startActivity(new Intent(this, PayActivity.class).putExtra("isRusels",true));
+//        } else
+            if (item.getItemId() == R.id.replenishBalance) {
 //            final View view = LayoutInflater.from(this).inflate(R.layout.replenish_balance_alert, null);
 //            final AlertDialog alertDialog = new AlertDialog.Builder(this)
 //                    .setView(view).create();
