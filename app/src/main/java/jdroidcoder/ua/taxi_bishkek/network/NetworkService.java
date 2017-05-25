@@ -256,7 +256,7 @@ public class NetworkService {
                 try {
                     OrderDto.Oreders.add(response.body());
                     OrderDto.AcceptOreders.getOrders().remove(response.body());
-                    editBalance(5);
+//                    editBalance(5);
                     EventBus.getDefault().post(new UpdateNotificationEvent());
                 } catch (Exception e) {
                     EventBus.getDefault().post(new ErrorMessageEvent(e.getMessage()));

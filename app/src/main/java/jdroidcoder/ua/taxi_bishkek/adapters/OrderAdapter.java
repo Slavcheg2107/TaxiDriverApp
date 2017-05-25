@@ -85,7 +85,7 @@ public class OrderAdapter extends BaseAdapter {
             convertView.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (new Date().getTime() - orderDto.getAcceptDate().getTime() >= 600000) {
+                    if (new Date().getTime() - orderDto.getAcceptDate().getTime() >= 180000) {
                         new NetworkService().removeOrder(orderDto);
                     } else {
                         new NetworkService().removeAcceptedOrder(orderDto.getId());
