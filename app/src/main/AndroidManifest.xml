@@ -11,6 +11,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+    <permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <application
         android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
@@ -29,8 +31,8 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".service.LocationService" />
         <service android:name=".service.UpdateOrdersService" />
+        <service android:name=".service.NotificationService" />
 
         <activity
             android:name=".activity.OrdersActivity"
@@ -49,7 +51,6 @@
         <activity
             android:name=".activity.PayActivity"
             android:screenOrientation="portrait" />
-
     </application>
 
 </manifest>

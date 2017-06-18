@@ -1,5 +1,10 @@
 package jdroidcoder.ua.taxi_bishkek.network;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.telephony.TelephonyManager;
+import android.util.Log;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Collections;
@@ -7,14 +12,18 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import jdroidcoder.ua.taxi_bishkek.R;
+import jdroidcoder.ua.taxi_bishkek.activity.LoginActivity;
 import jdroidcoder.ua.taxi_bishkek.activity.OrdersActivity;
 import jdroidcoder.ua.taxi_bishkek.events.ConnectionErrorEvent;
 import jdroidcoder.ua.taxi_bishkek.events.ErrorMessageEvent;
 import jdroidcoder.ua.taxi_bishkek.events.MoveNextEvent;
 import jdroidcoder.ua.taxi_bishkek.events.ShowMapEvent;
+import jdroidcoder.ua.taxi_bishkek.events.SimChangedEvent;
 import jdroidcoder.ua.taxi_bishkek.events.TypePhoneEvent;
 import jdroidcoder.ua.taxi_bishkek.events.UpdateAdapterEvent;
 import jdroidcoder.ua.taxi_bishkek.events.UpdateNotificationEvent;
+import jdroidcoder.ua.taxi_bishkek.events.UserCoordinateNullEvent;
 import jdroidcoder.ua.taxi_bishkek.model.OrderDto;
 import jdroidcoder.ua.taxi_bishkek.model.UserCoordinateDto;
 import jdroidcoder.ua.taxi_bishkek.model.UserProfileDto;
@@ -22,6 +31,11 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static jdroidcoder.ua.taxi_bishkek.activity.LoginActivity.APP_PREFERENCES;
+import static jdroidcoder.ua.taxi_bishkek.activity.LoginActivity.APP_PREFERENCES_SIMID;
+import static jdroidcoder.ua.taxi_bishkek.activity.LoginActivity.count;
+import static jdroidcoder.ua.taxi_bishkek.activity.LoginActivity.prevGEmail;
 
 /**
  * Created by jdroidcoder on 07.04.17.
@@ -40,10 +54,18 @@ public class NetworkService {
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if (response.body()) {
                     EventBus.getDefault().post(new TypePhoneEvent());
-                } else {
-                    login(login, password);
+                    }
+                 else {
+                    if (!LoginActivity.settings.getString(APP_PREFERENCES_SIMID, "").equals(LoginActivity.m.getSimSerialNumber())) {
+                        if(LoginActivity.count == 1){
+                        prevGEmail = login;}
+                        EventBus.getDefault().post(new SimChangedEvent());
+                    } else {
+                        login(login, password);
+                    }
                 }
             }
+
 
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
@@ -67,7 +89,7 @@ public class NetworkService {
 
             @Override
             public void onFailure(Call<UserProfileDto> call, Throwable t) {
-                EventBus.getDefault().post(new ErrorMessageEvent("Пользователь с таким телефоном уже существует"));
+                EventBus.getDefault().post(new ErrorMessageEvent(String.valueOf(R.string.new_phone_number)));
             }
         });
     }
@@ -104,15 +126,17 @@ public class NetworkService {
                 try {
                     if (OrdersActivity.myLocation != null) {
                         for (int i = 0; i < response.body().size(); i++) {
+                            if(response.body().get(i).getPointACoordinate() != null){
                             response.body().get(i).setDistance(gps2m(OrdersActivity.myLocation.getLatitude(),
                                     OrdersActivity.myLocation.getLongitude(),
                                     response.body().get(i).getPointACoordinate()[0],
                                     response.body().get(i).getPointACoordinate()[1]));
-                        }
+                        }}
+
                         Collections.sort(response.body(), new Comparator<OrderDto>() {
                             @Override
                             public int compare(OrderDto o1, OrderDto o2) {
-                                return o2.getDistance().compareTo(o1.getDistance());
+                                return o1.getDistance().compareTo(o2.getDistance());
                             }
                         });
                     }
@@ -121,7 +145,7 @@ public class NetworkService {
                     EventBus.getDefault().post(new UpdateNotificationEvent());
                     EventBus.getDefault().post(new ConnectionErrorEvent(false));
                 } catch (Exception e) {
-
+                    Log.e("SetItems", e.getMessage());
                 }
             }
 
@@ -228,7 +252,7 @@ public class NetworkService {
 
             @Override
             public void onFailure(Call<UserCoordinateDto> call, Throwable t) {
-                EventBus.getDefault().post(new ConnectionErrorEvent(true));
+                EventBus.getDefault().post(new UserCoordinateNullEvent());
             }
         });
     }
@@ -275,12 +299,12 @@ public class NetworkService {
         call.enqueue(new Callback<UserProfileDto>() {
             @Override
             public void onResponse(Call<UserProfileDto> call, Response<UserProfileDto> response) {
-                UserProfileDto.User.setPhone(response.body().getPhone());
-                UserProfileDto.User.setFirstName(response.body().getFirstName());
-                UserProfileDto.User.setLastName(response.body().getLastName());
-                UserProfileDto.User.setEmail(response.body().getEmail());
-                UserProfileDto.User.setBalance(response.body().getBalance());
-                EventBus.getDefault().post(new MoveNextEvent());
+                   UserProfileDto.User.setPhone(response.body().getPhone());
+                   UserProfileDto.User.setFirstName(response.body().getFirstName());
+                   UserProfileDto.User.setLastName(response.body().getLastName());
+                   UserProfileDto.User.setEmail(response.body().getEmail());
+                   UserProfileDto.User.setBalance(response.body().getBalance());
+                   EventBus.getDefault().post(new MoveNextEvent());
             }
 
             @Override

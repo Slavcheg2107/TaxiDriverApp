@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -31,6 +32,7 @@ import jdroidcoder.ua.taxi_bishkek.events.ConnectionErrorEvent;
 import jdroidcoder.ua.taxi_bishkek.events.ErrorMessageEvent;
 import jdroidcoder.ua.taxi_bishkek.events.ShowMapEvent;
 import jdroidcoder.ua.taxi_bishkek.events.UpdateAdapterEvent;
+import jdroidcoder.ua.taxi_bishkek.events.UserCoordinateNullEvent;
 import jdroidcoder.ua.taxi_bishkek.model.OrderDto;
 import jdroidcoder.ua.taxi_bishkek.model.UserProfileDto;
 import jdroidcoder.ua.taxi_bishkek.network.NetworkService;
@@ -53,6 +55,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
     SwipeRefreshLayout swipeRefreshLayout;
     private View view;
     private Snackbar snackbarForUpdate;
+
     private Snackbar snackbarForConnection;
     private boolean isShowSnackbar = false;
 
@@ -188,11 +191,5 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
         }else {
             snackbarForConnection.dismiss();
         }
-    }
-
-    @Subscribe
-    public void onChangeLocationEvent(ChangeLocationEvent changeLocationEvent) {
-        networkService.setCoordinate(changeLocationEvent.getLocation().getLatitude(),
-                changeLocationEvent.getLocation().getLongitude());
     }
 }

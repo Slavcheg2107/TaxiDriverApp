@@ -2,7 +2,7 @@
     <string name="app_name">Водитель</string>
     <string name="unknow_error">Неизвестная ошибка</string>
     <string name="internet_error">Включите интернет соединение</string>
-    <string name="typeYourPhone">Type your phone</string>
+    <string name="typeYourPhone">Напишите ваш номер</string>
     <string name="google_play_services_version">AIzaSyDUwhlpulPNHCtw2iYVHQnF6tLd3k-Egsw</string>
     <string name="call_label">Call</string>
     <string name="changeNumber">Change number</string>
@@ -21,4 +21,5 @@
     <string name="app_label">Нажмите кнопку: \"Попутное такси\"</string>
     <string name="service">Найдите раздел: \"Услуги такси\"</string>
     <string name="move_to_other_service">Зайдите в раздел: \"Другие услуги\"</string>
+    <string name="new_phone_number">У вас новый номер? Тогда создайте другой аккаунт Google.</string>
 </resources>

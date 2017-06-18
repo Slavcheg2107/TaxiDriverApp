@@ -19,7 +19,6 @@ public class OrderDto {
     private double[] pointBCoordinate;
     private Integer distance;
     private Long acceptDate;
-
     public OrderDto() {
     }
 
@@ -167,17 +166,33 @@ public class OrderDto {
         private static List<OrderDto> orders = new ArrayList<>();
 
         public static void add(OrderDto orderDto) {
-            orders.add(orderDto);
+            if(orderDto.getPointA() == null){
+                    orders.add(orderDto);
+            }
+            else orders.add(orderDto);
+
         }
 
         public static List<OrderDto> getOrders() {
+
             return orders;
         }
 
         public static void setItems(List<OrderDto> orders) {
-            Oreders.orders = orders;
+            if(!orders.isEmpty()){
+            for(int i = 0; i<orders.size(); i ++){
+                if(orders.get(i).getDistance() < 20000 || String.valueOf(orders.get(i).getDistance()).equals("null")) {
+                    Oreders.orders.add(orders.get(i));
+            }
+//            else
+//                    Oreders.orders.remove(i);
+            }
         }
-    }
+        else{
+                Oreders.orders.clear();
+            }
+    }}
+
 
     public static class AcceptOreders {
         private static List<OrderDto> orders = new ArrayList<>();

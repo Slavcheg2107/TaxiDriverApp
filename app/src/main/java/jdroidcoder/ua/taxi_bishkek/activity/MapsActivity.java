@@ -1,5 +1,6 @@
 package jdroidcoder.ua.taxi_bishkek.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import jdroidcoder.ua.taxi_bishkek.adapters.MarkerAdapter;
 import jdroidcoder.ua.taxi_bishkek.events.ShowMapEvent;
 import jdroidcoder.ua.taxi_bishkek.fragment.OrderFragment;
 
+
 /**
  * Created by jdroidcoder on 07.04.17.
  */
@@ -36,6 +38,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        } catch (Exception e) {
         if(showMapEvent.getLat() == null) {
             Toast.makeText(this, "User not get coordinate", Toast.LENGTH_LONG).show();
+
         }
 //        }
         ButterKnife.bind(this);
@@ -74,3 +77,4 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return false;
     }
 }
+

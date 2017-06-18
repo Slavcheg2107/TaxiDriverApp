@@ -31,7 +31,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:text="3 пассажира, тогда по 50 сом с каждого."
+        android:text="3 пассажира, тогда по 50 с каждого."
         android:textColor="#373737"
         android:textSize="16sp" />
 
