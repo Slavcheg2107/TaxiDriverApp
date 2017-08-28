@@ -22,4 +22,6 @@
     <string name="service">Найдите раздел: \"Услуги такси\"</string>
     <string name="move_to_other_service">Зайдите в раздел: \"Другие услуги\"</string>
     <string name="new_phone_number">У вас новый номер? Тогда создайте другой аккаунт Google.</string>
+    <string name="rate_app_text">Оцените приложение.\n
+        Спасибо за вашу поддержку!</string>
 </resources>
