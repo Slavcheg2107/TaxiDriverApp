@@ -1,20 +1,20 @@
 package jdroidcoder.ua.taxi_bishkek_driver.model;
 
-/**
- * Created by jdroidcoder on 07.04.17.
- */
+
 public class UserProfileDto {
     private String firstName;
     private String lastName;
     private String phone;
     private String email;
     private int balance;
+    private String password;
 
     public UserProfileDto() {
     }
 
     public UserProfileDto(String firstName, String lastName,
-                          String phone, String email, int balance) {
+                          String phone, String email, int balance, String password) {
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -62,51 +62,11 @@ public class UserProfileDto {
         this.email = email;
     }
 
-    public static class User {
-        private static String firstName;
-        private static String lastName;
-        private static String phone;
-        private static String email;
-        private static int balance;
+    public String getPassword() {
+        return password;
+    }
 
-        public static int getBalance() {
-            return balance;
-        }
-
-        public static void setBalance(int balance) {
-            User.balance = balance;
-        }
-
-        public static String getFirstName() {
-            return firstName;
-        }
-
-        public static void setFirstName(String firstName) {
-            User.firstName = firstName;
-        }
-
-        public static String getLastName() {
-            return lastName;
-        }
-
-        public static void setLastName(String lastName) {
-            User.lastName = lastName;
-        }
-
-        public static String getPhone() {
-            return phone;
-        }
-
-        public static void setPhone(String phone) {
-            User.phone = phone;
-        }
-
-        public static String getEmail() {
-            return email;
-        }
-
-        public static void setEmail(String email) {
-            User.email = email;
-        }
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

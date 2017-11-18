@@ -30,12 +30,9 @@ import jdroidcoder.ua.taxi_bishkek_driver.events.ErrorMessageEvent;
 import jdroidcoder.ua.taxi_bishkek_driver.events.ShowMapEvent;
 import jdroidcoder.ua.taxi_bishkek_driver.events.UpdateAdapterEvent;
 import jdroidcoder.ua.taxi_bishkek_driver.model.OrderDto;
-import jdroidcoder.ua.taxi_bishkek_driver.model.UserProfileDto;
 import jdroidcoder.ua.taxi_bishkek_driver.network.NetworkService;
+import jdroidcoder.ua.taxi_bishkek_driver.utils.Settings;
 
-/**
- * Created by jdroidcoder on 11.04.17.
- */
 public class OrderFragment extends Fragment implements AdapterView.OnItemClickListener {
     @BindView(R.id.orderListView)
     ListView orderListView;
@@ -66,9 +63,9 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                networkService.getProfile(UserProfileDto.User.getEmail());
+                networkService.getProfile(Settings.currentUser.getEmail());
                 networkService.getOrders();
-                networkService.getAllAcceptOrders(UserProfileDto.User.getPhone());
+                networkService.getAllAcceptOrders(Settings.currentUser.getPhone());
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -92,7 +89,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
     @Override
     public void onDestroyView() {
         for(int i = 0; i<OrderDto.AcceptOreders.getOrders().size(); i++){
-            new NetworkService().removeAcceptedOrder(OrderDto.AcceptOreders.getOrders().get(i).getId(), UserProfileDto.User.getPhone());
+            new NetworkService().removeAcceptedOrder(OrderDto.AcceptOreders.getOrders().get(i).getId(), Settings.currentUser.getPhone());
         }
         unbinder.unbind();
         EventBus.getDefault().unregister(this);
@@ -121,7 +118,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
                         return;
                     }
                     orderDto = OrderDto.Oreders.getOrders().get(position);
-                    if (orderDto.getUserPhone().equals(UserProfileDto.User.getPhone())) {
+                    if (orderDto.getUserPhone().equals(Settings.currentUser.getPhone())) {
                         EventBus.getDefault().post(new ErrorMessageEvent("Вы пытаетесь взять заказ у самого себя"));
                         return;
                     }
@@ -147,7 +144,7 @@ public class OrderFragment extends Fragment implements AdapterView.OnItemClickLi
     }
 
     private boolean checkBalance() {
-        return UserProfileDto.User.getBalance() == 0;
+        return Settings.currentUser.getBalance() < 1;
     }
 
     @Subscribe

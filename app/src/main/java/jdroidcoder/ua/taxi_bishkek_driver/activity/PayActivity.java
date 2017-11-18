@@ -4,13 +4,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-import jdroidcoder.ua.taxi_bishkek_driver.BuildConfig;
 import jdroidcoder.ua.taxi_bishkek_driver.R;
-import jdroidcoder.ua.taxi_bishkek_driver.model.UserProfileDto;
+import jdroidcoder.ua.taxi_bishkek_driver.utils.Settings;
 
-/**
- * Created by jdroidcoder on 08.05.17.
- */
+
 public class PayActivity extends AppCompatActivity{
 //        implements View.OnClickListener {
 //    private static final int MERCHANT_ID = 1396424;
@@ -31,7 +28,7 @@ public class PayActivity extends AppCompatActivity{
             setContentView(R.layout.replenish_balance_alert);
 
             TextView userPhone = (TextView) findViewById(R.id.user_phone);
-            userPhone.setText(userPhone.getText() + UserProfileDto.User.getPhone());
+            userPhone.setText(userPhone.getText() + Settings.currentUser.getPhone());
         }else {
             setContentView(R.layout.rules_alert);
         }
@@ -78,7 +75,7 @@ public class PayActivity extends AppCompatActivity{
 //            return;
 //        }
 //
-//        final String email = UserProfileDto.User.getEmail();
+//        final String email = Settings.currentUser.getEmail();
 //        final String description = "Баланс";
 ////        if (TextUtils.isEmpty(email) || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
 ////            editEmail.setError(getString(R.string.e_invalid_email));

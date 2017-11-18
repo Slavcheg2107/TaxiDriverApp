@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,15 +24,13 @@ import java.util.List;
 
 import jdroidcoder.ua.taxi_bishkek_driver.R;
 import jdroidcoder.ua.taxi_bishkek_driver.activity.OrdersActivity;
+import jdroidcoder.ua.taxi_bishkek_driver.events.CallEvent;
 import jdroidcoder.ua.taxi_bishkek_driver.events.ErrorMessageEvent;
 import jdroidcoder.ua.taxi_bishkek_driver.events.UpdateAdapterEvent;
 import jdroidcoder.ua.taxi_bishkek_driver.model.OrderDto;
-import jdroidcoder.ua.taxi_bishkek_driver.model.UserProfileDto;
 import jdroidcoder.ua.taxi_bishkek_driver.network.NetworkService;
+import jdroidcoder.ua.taxi_bishkek_driver.utils.Settings;
 
-/**
- * Created by jdroidcoder on 10.04.17.
- */
 public class OrderAdapter extends BaseAdapter {
     private Context context;
     private boolean isAccept = false;
@@ -102,8 +101,8 @@ public class OrderAdapter extends BaseAdapter {
                                         @Override
                                         public void onClick(View v) {
                                             if(isCalled) {
-                                                networkService.addComplaint(UserProfileDto.User.getPhone(), orderDto.getUserPhone());
-                                                networkService.removeAcceptedOrder(orderDto.getId(), UserProfileDto.User.getPhone());
+                                                networkService.addComplaint(Settings.currentUser.getPhone(), orderDto.getUserPhone());
+                                                networkService.removeAcceptedOrder(orderDto.getId(), Settings.currentUser.getPhone());
                                             }
                                             alertDialog.dismiss();
                                         }
@@ -145,17 +144,18 @@ public class OrderAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
 
-                        networkService.removeAcceptedOrder(orderDto.getId(), UserProfileDto.User.getPhone());
+                    networkService.removeAcceptedOrder(orderDto.getId(), Settings.currentUser.getPhone());
                         OrderDto.AcceptOreders.getOrders().remove(orderDto);
                     EventBus.getDefault().post(new UpdateAdapterEvent());
                 }
             });
+
             convertView.findViewById(R.id.call).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     networkService.startCall(orderDto.getId());
                     Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                    callIntent.setData(Uri.parse("tel:" + Uri.encode(orderDto.getUserPhone().trim())));
+                    callIntent.setData(Uri.parse("tel:" + "+" + Uri.encode(orderDto.getUserPhone().trim())));
                     callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(callIntent);
                     isCalled = true;
@@ -170,12 +170,19 @@ public class OrderAdapter extends BaseAdapter {
                 ((TextView) convertView.findViewById(R.id.toET)).setTextColor(Color.GRAY);
             }
         } catch (Exception e) {
-            Log.e("ADAPTER", e.getMessage());
+            if (e != null)
+                Log.e("ADAPTER", e.toString());
         }
         }
         return convertView;
     }
+
     public void setAccept(boolean accept) {
         isAccept = accept;
+    }
+
+    @Subscribe
+    public void onCallEvent(CallEvent event) {
+
     }
 }

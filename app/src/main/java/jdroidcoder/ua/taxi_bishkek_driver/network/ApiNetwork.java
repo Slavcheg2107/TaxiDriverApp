@@ -15,24 +15,18 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-/**
- * Created by jdroidcoder on 07.04.17.
- */
 public interface ApiNetwork {
     @POST("register")
     @FormUrlEncoded
-    Call<Boolean> register(@Field("email") String email, @Field("password") String password);
+    Call<Boolean> register(@Field("phone") String phone, @Field("password") String password);
 
     @POST("login")
     @FormUrlEncoded
-    Call<UserProfileDto> login(@Field("email") String email, @Field("password") String password);
+    Call<Void> login(@Field("phone") String phone, @Field("password") String password);
 
     @POST("setDataToProfile")
     @FormUrlEncoded
-    Call<UserProfileDto> setDataToProfile(@Field("email") String email,
-                                          @Field("firstName") String firstName,
-                                          @Field("lastName") String lastName,
-                                          @Field("phone") String phone);
+    Call<UserProfileDto> setDataToProfile(@Field("phone") String userPhone);
 
     @POST("acceptOrder")
     @FormUrlEncoded
@@ -75,7 +69,7 @@ public interface ApiNetwork {
 
     @POST("getProfile")
     @FormUrlEncoded
-    Call<UserProfileDto> getProfile(@Field("email") String email);
+    Call<UserProfileDto> getProfile(@Field("phone") String userPhone);
 
     @POST("uploadCheck")
     Call<Void> uploadCheck(@Body RequestBody file);

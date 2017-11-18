@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:text="Перейдите на последнюю страницу"
+            android:text="Перейдите на  5 - ю страницу"
             android:textColor="#373737"
             android:textSize="16sp" />
 

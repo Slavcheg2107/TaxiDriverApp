@@ -4,19 +4,17 @@ import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import jdroidcoder.ua.taxi_bishkek_driver.R;
-import jdroidcoder.ua.taxi_bishkek_driver.activity.LoginActivity;
 import jdroidcoder.ua.taxi_bishkek_driver.activity.OrdersActivity;
 import jdroidcoder.ua.taxi_bishkek_driver.events.ConnectionErrorEvent;
 import jdroidcoder.ua.taxi_bishkek_driver.events.ErrorMessageEvent;
 import jdroidcoder.ua.taxi_bishkek_driver.events.MoveNextEvent;
 import jdroidcoder.ua.taxi_bishkek_driver.events.ShowMapEvent;
-import jdroidcoder.ua.taxi_bishkek_driver.events.SimChangedEvent;
 import jdroidcoder.ua.taxi_bishkek_driver.events.TypePhoneEvent;
 import jdroidcoder.ua.taxi_bishkek_driver.events.UpdateAdapterEvent;
 import jdroidcoder.ua.taxi_bishkek_driver.events.UpdateNotificationEvent;
@@ -24,40 +22,44 @@ import jdroidcoder.ua.taxi_bishkek_driver.events.UserCoordinateNullEvent;
 import jdroidcoder.ua.taxi_bishkek_driver.model.OrderDto;
 import jdroidcoder.ua.taxi_bishkek_driver.model.UserCoordinateDto;
 import jdroidcoder.ua.taxi_bishkek_driver.model.UserProfileDto;
+import jdroidcoder.ua.taxi_bishkek_driver.utils.Settings;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by jdroidcoder on 07.04.17.
- */
 public class NetworkService {
     private RetrofitConfig retrofitConfig;
-
+    private String password1;
+    boolean registered;
     public NetworkService() {
         retrofitConfig = new RetrofitConfig();
     }
 
-    public void register(final String login, final String password) {
-        Call<Boolean> call = retrofitConfig.getApiNetwork().register(login, password);
+    public void register(final String phone, final String password) {
+        Call<Boolean> call = retrofitConfig.getApiNetwork().register(phone, password);
         call.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if (response.body()) {
-                    EventBus.getDefault().post(new TypePhoneEvent());
+                password1 = password;
+                String error;
+                if (!response.isSuccessful()) {
+                    try {
+                        error = response.errorBody().string();
+                        if (error.equals("User with this phone already exists")) {
+                            setDataToProfile(phone);
+                        } else if (error.equals("User with this IP have more that 4 accounts")) {
+                            EventBus.getDefault().post(new ErrorMessageEvent("Вы имеете максимальное число аккаунтов"));
+                            EventBus.getDefault().post(new TypePhoneEvent());
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                 else {
-                    if (!LoginActivity.settings.getString(LoginActivity.APP_PREFERENCES_SIMID, "").equals(LoginActivity.m.getSimSerialNumber())) {
-                        if(LoginActivity.count == 1){
-                        LoginActivity.prevGEmail = login;}
-                        EventBus.getDefault().post(new SimChangedEvent());
-                    } else {
-                        login(login, password);
-                    }
+                } else {
+                    setDataToProfile(phone);
                 }
             }
-
 
             @Override
             public void onFailure(Call<Boolean> call, Throwable t) {
@@ -66,66 +68,74 @@ public class NetworkService {
         });
     }
 
-    public void setDataToProfile(String email, String firstName, String lastName, String phone) {
-        Call<UserProfileDto> call = retrofitConfig.getApiNetwork().setDataToProfile(email, firstName, lastName, phone);
-        call.enqueue(new Callback<UserProfileDto>() {
-            @Override
-            public void onResponse(Call<UserProfileDto> call, Response<UserProfileDto> response) {
-                UserProfileDto.User.setPhone(response.body().getPhone());
-                UserProfileDto.User.setFirstName(response.body().getFirstName());
-                UserProfileDto.User.setLastName(response.body().getLastName());
-                UserProfileDto.User.setEmail(response.body().getEmail());
-                UserProfileDto.User.setBalance(response.body().getBalance());
-                EventBus.getDefault().post(new MoveNextEvent());
-            }
-
-            @Override
-            public void onFailure(Call<UserProfileDto> call, Throwable t) {
-                EventBus.getDefault().post(new ErrorMessageEvent(String.valueOf(R.string.new_phone_number)));
-            }
-        });
-    }
-
-    public void login(final String login, final String password) {
-        Call<UserProfileDto> call = retrofitConfig.getApiNetwork().login(login, password);
+    public void setDataToProfile(final String phone) {
+        Call<UserProfileDto> call = retrofitConfig.getApiNetwork().setDataToProfile(phone);
         call.enqueue(new Callback<UserProfileDto>() {
             @Override
             public void onResponse(Call<UserProfileDto> call, Response<UserProfileDto> response) {
                 try {
-                    UserProfileDto.User.setPhone(response.body().getPhone());
-                    UserProfileDto.User.setFirstName(response.body().getFirstName());
-                    UserProfileDto.User.setLastName(response.body().getLastName());
-                    UserProfileDto.User.setEmail(response.body().getEmail());
-                    UserProfileDto.User.setBalance(response.body().getBalance());
-                    EventBus.getDefault().post(new MoveNextEvent());
+                    if (response.isSuccessful()) {
+                        Settings.currentUser.setPhone(response.body().getPhone());
+                        login(phone, password1);
+                    }
                 } catch (Exception e) {
-                    Log.e("TAG", "Login failed");
-                    EventBus.getDefault().post(new ErrorMessageEvent("Your phone used"));
+                    EventBus.getDefault().post(new ErrorMessageEvent(e.getMessage()));
                 }
             }
 
             @Override
             public void onFailure(Call<UserProfileDto> call, Throwable t) {
+                EventBus.getDefault().post(new ErrorMessageEvent("Неизвестная ошибка"));
+            }
+        });
+    }
+
+    public void login(final String phone, final String password) {
+        Call<Void> call = retrofitConfig.getApiNetwork().login(phone, password);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                try {
+                    if (response.isSuccessful()) {
+                        Settings.currentUser.setPhone(phone);
+                        Settings.currentUser.setPassword(password);
+                        EventBus.getDefault().post(new MoveNextEvent());
+                    } else {
+                        String error = response.errorBody().string();
+                        if (error.equals("Login failed")) {
+                            EventBus.getDefault().post(new ErrorMessageEvent("Неверный пароль или номер"));
+                            EventBus.getDefault().post(new TypePhoneEvent());
+                        }
+
+                    }
+                } catch (Exception e) {
+                    Log.e("TAG", e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("login", t.getMessage());
                 EventBus.getDefault().post(new ConnectionErrorEvent(true));
             }
         });
     }
 
     public void getOrders() {
-        Call<List<OrderDto>> call = retrofitConfig.getApiNetwork().getOrders(UserProfileDto.User.getPhone());
+        Call<List<OrderDto>> call = retrofitConfig.getApiNetwork().getOrders(Settings.currentUser.getPhone());
         call.enqueue(new Callback<List<OrderDto>>() {
             @Override
             public void onResponse(Call<List<OrderDto>> call, Response<List<OrderDto>> response) {
                 try {
                     if (OrdersActivity.myLocation != null) {
                         for (int i = 0; i < response.body().size(); i++) {
-                            if(response.body().get(i).getPointACoordinate() != null){
-                            response.body().get(i).setDistance(gps2m(OrdersActivity.myLocation.getLatitude(),
-                                    OrdersActivity.myLocation.getLongitude(),
-                                    response.body().get(i).getPointACoordinate()[0],
-                                    response.body().get(i).getPointACoordinate()[1]));
+                            if (response.body().get(i).getPointACoordinate() != null) {
+                                response.body().get(i).setDistance(gps2m(OrdersActivity.myLocation.getLatitude(),
+                                        OrdersActivity.myLocation.getLongitude(),
+                                        response.body().get(i).getPointACoordinate()[0],
+                                        response.body().get(i).getPointACoordinate()[1]));
 //                                if(response.body().get(i).getDistance()>20000) response.body().remove(i);
-                            }else{
+                            } else {
                                 response.body().get(i).setDistance(null);
                             }
                         }
@@ -135,19 +145,19 @@ public class NetworkService {
                                 if (o1.getDistance() == o2.getDistance()) {
                                     return 0;
                                 }
-                                if (o1.getDistance() == null||o1.getCanceled()) {
+                                if (o1.getDistance() == null) {
                                     return 1;
                                 }
-                                if (o2.getDistance() == null||o2.getCanceled() ) {
+                                if (o2.getDistance() == null) {
                                     return -1;
                                 }
-//                                if (o1.getCanceled()){
-//                                    return -1;
-//                                }
-//                                if(o2.getCanceled()){
-//                                    return -1;
-//                                }
                                 return o1.getDistance().compareTo(o2.getDistance());
+                            }
+                        });
+                        Collections.sort(response.body(), new Comparator<OrderDto>() {
+                            @Override
+                            public int compare(OrderDto o, OrderDto o0) {
+                                return o.getCanceled().compareTo(o0.getCanceled());
                             }
                         });
                     }
@@ -212,44 +222,27 @@ public class NetworkService {
 
     public void acceptOrder(Long id, String pointA, String pointB, String userPhone) {
         Call<OrderDto> call = retrofitConfig.getApiNetwork().acceptOrder(id, pointA, pointB,
-                userPhone, "accepted", UserProfileDto.User.getPhone(), new Date().getTime());
+                userPhone, "accepted", Settings.currentUser.getPhone(), new Date().getTime());
         call.enqueue(new Callback<OrderDto>() {
             @Override
             public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
-                try {
-                    if(response.code()==400){
-                        EventBus.getDefault().post(new ErrorMessageEvent("Вы взяли максимальное число заказов"));
+                if (!response.isSuccessful()) {
+                    if (response.code() == 400 && response.errorBody() != null) {
+                        EventBus.getDefault().post(new ErrorMessageEvent("Пополните баланс"));
                     }
-                    else if (response.message().equals("Insufficient balance")){
-                        EventBus.getDefault().post(new ErrorMessageEvent("У вас нулевой баланс"));
-                    EventBus.getDefault().post(new UpdateNotificationEvent());
+                    if (response.code() == 400 && response.errorBody() == null) {
+                        EventBus.getDefault().post(new ErrorMessageEvent("Вы взяли слишком много заказов"));
+                    }
+                } else {
                     OrderDto.AcceptOreders.add(response.body());
-                    }
-                } catch (Exception e) {
-                    EventBus.getDefault().post(new ErrorMessageEvent("Order is done"));
+                    EventBus.getDefault().post(new UpdateNotificationEvent());
                 }
+                EventBus.getDefault().post(new UpdateNotificationEvent());
             }
+
 
             @Override
             public void onFailure(Call<OrderDto> call, Throwable t) {
-                EventBus.getDefault().post(new ConnectionErrorEvent(true));
-            }
-        });
-    }
-
-    public void removeOrder(final OrderDto orderDto) {
-        Call<Boolean> call = retrofitConfig.getApiNetwork().removeOrder(orderDto.getId());
-        call.enqueue(new Callback<Boolean>() {
-            @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if (response.body()) {
-                    OrderDto.Oreders.getOrders().remove(orderDto);
-                    EventBus.getDefault().post(new UpdateAdapterEvent());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
                 EventBus.getDefault().post(new ConnectionErrorEvent(true));
             }
         });
@@ -274,36 +267,36 @@ public class NetworkService {
         });
     }
 
-    public void editBalance(int balance) {
-        Call<Void> call = retrofitConfig.getApiNetwork().editBalance(UserProfileDto.User.getEmail(), balance);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                getProfile(UserProfileDto.User.getEmail());
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                EventBus.getDefault().post(new ConnectionErrorEvent(true));
-            }
-        });
-    }
+//    public void editBalance(int balance) {
+//        Call<Void> call = retrofitConfig.getApiNetwork().editBalance(Settings.currentUser.getEmail(), balance);
+//        call.enqueue(new Callback<Void>() {
+//            @Override
+//            public void onResponse(Call<Void> call, Response<Void> response) {
+//                getProfile(Settings.currentUser.getEmail());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Void> call, Throwable t) {
+//                EventBus.getDefault().post(new ConnectionErrorEvent(true));
+//            }
+//        });
+//    }
 
     public void removeAcceptedOrder(long id, String driverPhone) {
         Call<OrderDto> call = retrofitConfig.getApiNetwork().removeAcceptedOrder(id, driverPhone);
         call.enqueue(new Callback<OrderDto>() {
             @Override
             public void onResponse(Call<OrderDto> call, Response<OrderDto> response) {
-                if(response.code()!=400){
-                try {
-                    OrderDto.Oreders.add(response.body());
-                    OrderDto.AcceptOreders.getOrders().remove(response.body());
-                    EventBus.getDefault().post(new UpdateNotificationEvent());
-                } catch (Exception e) {
-                    EventBus.getDefault().post(new ErrorMessageEvent("Error while removing accepted order"));
-                }
-                }
-                else EventBus.getDefault().post(new ErrorMessageEvent("Заказ уже нельзя отменить"));
+                if (response.isSuccessful()) {
+                    try {
+                        OrderDto.Oreders.add(response.body());
+                        OrderDto.AcceptOreders.getOrders().remove(response.body());
+                        EventBus.getDefault().post(new UpdateNotificationEvent());
+                    } catch (Exception e) {
+                        EventBus.getDefault().post(new ErrorMessageEvent("Error while removing accepted order"));
+                    }
+                } else
+                    EventBus.getDefault().post(new ErrorMessageEvent("Жалоба принята, вам вернут единицы"));
             }
 
             @Override
@@ -313,12 +306,26 @@ public class NetworkService {
         });
     }
 
-    public void startCall(Long orderId){
+    public void startCall(Long orderId) {
         Call<Void> call = retrofitConfig.getApiNetwork().startCall(orderId);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Log.e("startCall", String.valueOf(response.code()));
+//                try {
+////                if(response.isSuccessful()){
+//////                    EventBus.getDefault().post(new CallEvent());
+////                }
+////                else {
+////                    String error  = response.errorBody().string();
+////                    if(error.equals("Insufficient balance")){
+////                        EventBus.getDefault().post(new ErrorMessageEvent("Недостаточно баланса"));
+////                    }
+////                }
+//
+//                Log.e("startCall", String.valueOf(response.code()));
+//            }catch (IOException e) {
+//                    e.printStackTrace();
+//                }
             }
 
             @Override
@@ -327,41 +334,61 @@ public class NetworkService {
             }
         });
     }
-    public void addComplaint(String driverPhone, String userPhone){
+
+    public void addComplaint(String driverPhone, String userPhone) {
         Call<Void> call = retrofitConfig.getApiNetwork().addComplaint(driverPhone, userPhone);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                if(response.code() == 400){
-                    EventBus.getDefault().post(new ErrorMessageEvent("Вы уже отправляли жалобу на этого клиента"));
+                try {
+                    if (!response.isSuccessful()) {
+                        String error = response.errorBody().string();
+                        switch (error) {
+                            case "Driver already complained this user":
+                                EventBus.getDefault().post(new ErrorMessageEvent("Вы уже отправляли жалобу на этого клиента"));
+                                break;
+                            case "Driver can't complaint, before call":
+                                EventBus.getDefault().post(new ErrorMessageEvent("Вы не можете пожаловатся не позвонив клиенту"));
+                                break;
+                            case "Order not found":
+                                EventBus.getDefault().post(new ErrorMessageEvent("Этого заказа уже нет"));
+                                break;
+
+                        }
+                    } else if (response.isSuccessful()) {
+                        EventBus.getDefault().post(new ErrorMessageEvent("Ваша жалоба принята"));
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                else if(response.errorBody().toString().equals ("Driver can't complaint, before call")){
-                    EventBus.getDefault().post(new ErrorMessageEvent("Вы не можете пожаловатся не позвонив клиенту"));
-                }
-                else if(response.code() == 200) EventBus.getDefault().post(new ErrorMessageEvent("Жалоба принята, вам вернут единицы."));
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                try{
-                Log.e("TAG", t.getMessage());
-            }catch (Exception e){
-            Log.e("AddComplaint", "Add complaint fail");}
+                try {
+                    Log.e("TAG", t.getMessage());
+                } catch (Exception e) {
+                    Log.e("AddComplaint", "Add complaint fail");
+                }
             }
         });
     }
 
-    public void getProfile(final String email) {
-        Call<UserProfileDto> call = retrofitConfig.getApiNetwork().getProfile(email);
+    public void getProfile(final String userPhone) {
+        Call<UserProfileDto> call = retrofitConfig.getApiNetwork().getProfile(userPhone);
         call.enqueue(new Callback<UserProfileDto>() {
             @Override
             public void onResponse(Call<UserProfileDto> call, Response<UserProfileDto> response) {
-                   UserProfileDto.User.setPhone(response.body().getPhone());
-                   UserProfileDto.User.setFirstName(response.body().getFirstName());
-                   UserProfileDto.User.setLastName(response.body().getLastName());
-                   UserProfileDto.User.setEmail(response.body().getEmail());
-                   UserProfileDto.User.setBalance(response.body().getBalance());
-                   EventBus.getDefault().post(new MoveNextEvent());
+                if (response.isSuccessful()) {
+                    Settings.currentUser.setPhone(response.body().getPhone());
+                    Settings.currentUser.setFirstName(response.body().getFirstName());
+                    Settings.currentUser.setLastName(response.body().getLastName());
+                    Settings.currentUser.setEmail(response.body().getEmail());
+                    Settings.currentUser.setBalance(response.body().getBalance());
+//                    if(Settings.currentUser.getEmail()==null) {
+//                        EventBus.getDefault().post(new MoveNextEvent());
+//                    }
+                }
             }
 
             @Override
@@ -387,7 +414,7 @@ public class NetworkService {
     }
 
     public void setCoordinate(Double lat, Double lng) {
-        Call<Void> call = retrofitConfig.getApiNetwork().setCoordinate(UserProfileDto.User.getPhone(), lat, lng);
+        Call<Void> call = retrofitConfig.getApiNetwork().setCoordinate(Settings.currentUser.getPhone(), lat, lng);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

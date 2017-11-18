@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "566298352592",
-    "project_id": "taxi-bishkek-driver1"
+    "project_number": "923809738335",
+    "project_id": "taxi-driver-ee416"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:566298352592:android:ad7c09f7b3b321f5",
+        "mobilesdk_app_id": "1:923809738335:android:ad7c09f7b3b321f5",
         "android_client_info": {
           "package_name": "jdroidcoder.ua.taxi_bishkek_driver"
         }
       },
       "oauth_client": [
         {
-          "client_id": "566298352592-7fjlhq87rdbfd9e0br7q2v9t3fv81slf.apps.googleusercontent.com",
+          "client_id": "923809738335-82oiha8tqbhm0qgn685nfoum8d311see.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "jdroidcoder.ua.taxi_bishkek_driver",
-            "certificate_hash": "be9d5276b01188d331bb0fa70932bf09e60c5a5f"
+            "certificate_hash": "3415cc30790d5dc865f948744cd3a0e84a3f0bc0"
           }
         },
         {
-          "client_id": "566298352592-botmpm74e5raucb6k2i38i78upmf2rif.apps.googleusercontent.com",
+          "client_id": "923809738335-0f1s0n1qbheg5fmdab8ctj4obab94gqd.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBBO7ilMF8up1DU3DsnqE1n_Qb3fxlbG6Q"
+          "current_key": "AIzaSyAYVI9P05W9GFUoxlYnvySPBawuV2iVTzg"
         }
       ],
       "services": {

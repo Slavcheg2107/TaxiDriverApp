@@ -39,22 +39,20 @@ import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
 import jdroidcoder.ua.taxi_bishkek_driver.R;
-import jdroidcoder.ua.taxi_bishkek_driver.events.UpdateAdapterEvent;
-import jdroidcoder.ua.taxi_bishkek_driver.events.UpdateNotificationEvent;
-import jdroidcoder.ua.taxi_bishkek_driver.service.NotificationService;
-import jdroidcoder.ua.taxi_bishkek_driver.utils.AppRater;
-import jdroidcoder.ua.taxi_bishkek_driver.utils.ImageFilePath;
 import jdroidcoder.ua.taxi_bishkek_driver.adapters.ViewPagerAdapter;
 import jdroidcoder.ua.taxi_bishkek_driver.events.ChangeListViewEvent;
 import jdroidcoder.ua.taxi_bishkek_driver.events.ErrorMessageEvent;
+import jdroidcoder.ua.taxi_bishkek_driver.events.UpdateAdapterEvent;
+import jdroidcoder.ua.taxi_bishkek_driver.events.UpdateNotificationEvent;
 import jdroidcoder.ua.taxi_bishkek_driver.fragment.OrderFragment;
-import jdroidcoder.ua.taxi_bishkek_driver.model.UserProfileDto;
+import jdroidcoder.ua.taxi_bishkek_driver.service.NotificationService;
 import jdroidcoder.ua.taxi_bishkek_driver.service.UpdateOrdersService;
+import jdroidcoder.ua.taxi_bishkek_driver.utils.AppRater;
+import jdroidcoder.ua.taxi_bishkek_driver.utils.ImageFilePath;
+import jdroidcoder.ua.taxi_bishkek_driver.utils.Settings;
 
 
-/**
- * Created by jdroidcoder on 07.04.17.
- */
+
 public class OrdersActivity extends AppCompatActivity {
     public static Location myLocation;
     boolean doubleBackToExitPressedOnce = false;
@@ -63,20 +61,40 @@ public class OrdersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.orders_activity);
+
+        /*if (savedInstanceState!=null) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }*/
+
+        Settings.init(savedInstanceState);
+
         ButterKnife.bind(this);
         AppRater.app_launched(this);
         EventBus.getDefault().register(this);
         if (ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+                != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.READ_PHONE_STATE,
                             Manifest.permission.READ_EXTERNAL_STORAGE},
                     123);
         }
+//         {
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,
+//                            Manifest.permission.READ_EXTERNAL_STORAGE},
+//                    123);
+//        }
         try {
             Log.e("CREATE", "CREATE");
             myLocation = SmartLocation.with(this).location().getLastLocation();
@@ -165,6 +183,19 @@ public class OrdersActivity extends AppCompatActivity {
         EventBus.getDefault().post(new UpdateAdapterEvent());
         super.onResume();
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Settings.save(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Settings.init(savedInstanceState);
+    }
+
     @Override
     protected void onRestart() {
         showSettingsDialog();
@@ -223,7 +254,7 @@ public class OrdersActivity extends AppCompatActivity {
 //            final AlertDialog alertDialog = new AlertDialog.Builder(this)
 //                    .setView(view).create();
 ////            TextView userPhone = (TextView) view.findViewById(R.id.user_phone);
-////            userPhone.setText(userPhone.getText() + UserProfileDto.User.getPhone());
+////            userPhone.setText(userPhone.getText() + Settings.currentUser.getPhone());
 //            view.findViewById(R.id.ok_button).setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
@@ -239,7 +270,7 @@ public class OrdersActivity extends AppCompatActivity {
 //            final AlertDialog alertDialog = new AlertDialog.Builder(this)
 //                    .setView(view).create();
 //            TextView userPhone = (TextView) view.findViewById(R.id.user_phone);
-//            userPhone.setText(userPhone.getText() + UserProfileDto.User.getPhone());
+//            userPhone.setText(userPhone.getText() + Settings.currentUser.getPhone());
 //            view.findViewById(R.id.ok_button).setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
@@ -280,7 +311,7 @@ public class OrdersActivity extends AppCompatActivity {
             emailIntent.setType("plain/text");
             emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"max-navsegda@mail.ru"});
             emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Пополнение");
-            emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Мой номер:" + UserProfileDto.User.getPhone());
+            emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Мой номер:" + Settings.currentUser.getPhone());
             emailIntent.putExtra(Intent.EXTRA_STREAM, pathUri);
             startActivity(Intent.createChooser(emailIntent, "Отправка письма..."));
         }
@@ -288,7 +319,7 @@ public class OrdersActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.getItem(0).setTitle(getString(R.string.balance) + " " + UserProfileDto.User.getBalance());
+        menu.getItem(0).setTitle(getString(R.string.balance) + " " + Settings.currentUser.getBalance());
         return super.onPrepareOptionsMenu(menu);
     }
 
